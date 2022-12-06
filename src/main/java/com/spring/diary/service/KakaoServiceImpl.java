@@ -191,7 +191,8 @@ public class KakaoServiceImpl implements KakaoService {
 		// HttP 요청 (POST 방식) 후, response 변수에 응답을 받음
 		// 해당 주소로 Http 요청을 보내 String 변수에 응답을 받는다
 		ResponseEntity<String> kakaoLogoutResponse = rt.exchange(
-				"https://kapi.kakao.com/v1/user/logout",
+//				"https://kapi.kakao.com/v1/user/unlink",		// 동의 전으로 돌아가기
+				"https://kapi.kakao.com/v1/user/logout",		// 그냥 로그아웃하기 
 				HttpMethod.POST,
 				kakaoLogoutRequest,
 				String.class
