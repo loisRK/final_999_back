@@ -195,8 +195,9 @@ public class KakaoServiceImpl implements KakaoService {
 		 * - access token 방식으로 request를 보내 logout을 실행하는 API 호출 
 		 */
 		ResponseEntity<String> kakaoLogoutResponse = rt.exchange(
-//				"https://kapi.kakao.com/v1/user/unlink",	// logout(동의 초기화)
-				"https://kapi.kakao.com/v1/user/logout",	// logout(동의 유지)
+
+//				"https://kapi.kakao.com/v1/user/unlink",		// 동의 전으로 돌아가기
+				"https://kapi.kakao.com/v1/user/logout",		// 그냥 로그아웃하기 
 				HttpMethod.POST,
 				kakaoLogoutRequest,
 				String.class
