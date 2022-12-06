@@ -173,6 +173,7 @@ public class KakaoServiceImpl implements KakaoService {
 	@Override
 	public ResponseEntity<String> logout(HttpServletRequest request) {
 		
+		// request 안에 들어있는 jwt 토큰의 payload 부분에서 accessToken 정보를 불러옴
 		String token = (String) request.getAttribute("accessToken");
 		
 		// 통신에 필요한 RestTemplate 객체를 만든다
@@ -188,10 +189,14 @@ public class KakaoServiceImpl implements KakaoService {
 				new HttpEntity<>(headers);
 		System.out.println("############ HEADERS : " + headers);
 		
-		// HttP 요청 (POST 방식) 후, response 변수에 응답을 받음
-		// 해당 주소로 Http 요청을 보내 String 변수에 응답을 받는다
+		/*
+		 * - HttP 요청 (POST 방식) 후, response 변수에 응답을 받음
+		 * - 해당 주소로 Http 요청을 보내 String 변수에 응답을 받는다
+		 * - access token 방식으로 request를 보내 logout을 실행하는 API 호출 
+		 */
 		ResponseEntity<String> kakaoLogoutResponse = rt.exchange(
-				"https://kapi.kakao.com/v1/user/logout",
+//				"https://kapi.kakao.com/v1/user/unlink",	// logout(동의 초기화)
+				"https://kapi.kakao.com/v1/user/logout",	// logout(동의 유지)
 				HttpMethod.POST,
 				kakaoLogoutRequest,
 				String.class
