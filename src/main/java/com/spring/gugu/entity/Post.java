@@ -2,12 +2,19 @@ package com.spring.gugu.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,8 +40,9 @@ public class Post {
 	private long postNo;
 	
 	// user table - user_id FK
-	@Column(name = "user_id")
-	private long userId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User postUser;
 	
 	/*
 	 * updatable = false : column에 대한 업데이트 방지
@@ -61,5 +69,8 @@ public class Post {
 	
 	@Column(name = "post_img")
 	private String postImg;
+	
+	@OneToMany(mappedBy = "likePost", cascade = CascadeType.REMOVE)
+	private List<Like> likes = new ArrayList<Like>();
 
 }

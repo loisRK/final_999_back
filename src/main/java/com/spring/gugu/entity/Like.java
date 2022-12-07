@@ -5,8 +5,12 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -26,12 +30,14 @@ import lombok.ToString;
 public class Like implements Serializable {
 
 	@Id
-	@Column(name = "post_no")
-	private long postNo;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "post_no")
+	private Post likePost;
 	
 	@Id
-	@Column(name = "user_id")
-	private long userId;
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User likeUser;
 	
 	@Column(name = "after_like")
 	private int afterLike;
