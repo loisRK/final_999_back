@@ -48,14 +48,14 @@ public class User {
 	@CreationTimestamp
 	private Timestamp createTime;
 	
-	@OneToMany(mappedBy = "postUser", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Post> posts = new ArrayList<Post>();
 	
-	@OneToOne(mappedBy = "roomUser", cascade = CascadeType.REMOVE)
-	private Room chatRoom = new Room();
+	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private Room room;
 	
-	@OneToOne(mappedBy = "likeUser", cascade = CascadeType.REFRESH)
-	private Like like = new Like();
+//	@OneToOne(mappedBy = "user", cascade = CascadeType.REFRESH)
+//	private Like like;
 
 	@Builder
 	public User(Long kakaoId, String kakaoNickname, String kakaoProfileImg,  

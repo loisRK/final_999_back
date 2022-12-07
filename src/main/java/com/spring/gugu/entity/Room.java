@@ -42,7 +42,7 @@ public class Room {
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	@NotFound(action = NotFoundAction.IGNORE) // 값이 발견되지 않으면 무시
-	private User roomUser;
+	private User user;
 	
 	@Column(name = "chat_lat")
 	private int chatLat;
