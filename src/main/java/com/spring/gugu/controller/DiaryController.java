@@ -42,9 +42,6 @@ import lombok.RequiredArgsConstructor;
 
 //import ch.qos.logback.classic.Logger;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController		// 페이지 전환이 필요없으므로 restController 사용
 @RequestMapping(value = "/api")
 @CrossOrigin(origins = {"http://localhost:3000"})

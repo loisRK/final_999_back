@@ -52,10 +52,10 @@ public class User {
 	private List<Post> posts = new ArrayList<Post>();
 	
 	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private Room chatRoom = new Room();
+	private Room room;
 	
-//	@OneToOne(mappedBy = "likeUser", cascade = CascadeType.REFRESH)
-//	private Like like = new Like();
+//	@OneToOne(mappedBy = "user", cascade = CascadeType.REFRESH)
+//	private Like like;
 
 	@Builder
 	public User(Long kakaoId, String kakaoNickname, String kakaoProfileImg,  

@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +44,7 @@ public class Post {
 	// user table - user_id FK
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@NotFound(action = NotFoundAction.IGNORE) // 값이 발견되지 않으면 무시
 	private User user;
 	
 	/*
@@ -70,7 +73,7 @@ public class Post {
 	@Column(name = "post_img")
 	private String postImg;
 	
-//	@OneToMany(mappedBy = "likePost", cascade = CascadeType.REMOVE)
+//	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
 //	private List<Like> likes = new ArrayList<Like>();
 
 }
