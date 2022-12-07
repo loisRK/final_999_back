@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.hibernate.mapping.Map;
 import org.json.simple.JSONObject;
@@ -182,6 +183,7 @@ public class KakaoServiceImpl implements KakaoService {
 	/*
 	 * kakao 로그인 시 저장된 user_id(kakaoId)로 회원 정보 불러오는 메소드
 	 */
+//	@Transactional
 	@Override
 	public User getUser(HttpServletRequest request) {
         Long kakaoId = (Long) request.getAttribute("userCode");
