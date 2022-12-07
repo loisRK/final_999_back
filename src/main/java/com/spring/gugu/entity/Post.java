@@ -37,12 +37,12 @@ public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_no")
-	private long postNo;
+	private Long postNo;
 	
 	// user table - user_id FK
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private User postUser;
+	private User user;
 	
 	/*
 	 * updatable = false : column에 대한 업데이트 방지
@@ -70,7 +70,7 @@ public class Post {
 	@Column(name = "post_img")
 	private String postImg;
 	
-	@OneToMany(mappedBy = "likePost", cascade = CascadeType.REMOVE)
-	private List<Like> likes = new ArrayList<Like>();
+//	@OneToMany(mappedBy = "likePost", cascade = CascadeType.REMOVE)
+//	private List<Like> likes = new ArrayList<Like>();
 
 }
