@@ -23,6 +23,7 @@ import com.spring.gugu.entity.FileEntity;
 import com.spring.gugu.entity.Post;
 import com.spring.gugu.repository.PostRepository;
 import com.spring.gugu.service.FileService;
+import com.spring.gugu.service.PostServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,48 +36,46 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PostController {
 	
-//	@Autowired
-	final PostRepository postRepo;
+	final PostServiceImpl postService;
 	
 	// 포스트 작성하기
 	@PostMapping("/post")
-	public void insertPost(@RequestParam("content") String content, 
+	public Long insertPost(@RequestParam("postContent") String content, 
+				@RequestParam("postLat") String postLat,
+				@RequestParam("postLong") String postLong,
 				@RequestParam(name="files", required = false) List<MultipartFile> files) {
 		
-		if (files != null) {
-			for(MultipartFile file : files) {
-				System.out.println(file.getSize());
-				String originalFileName = file.getOriginalFilename();
-				String fileName = UUID.randomUUID().toString() + originalFileName;
-				String savePath = System.getProperty("user.dir") + "\\files\\";
-				String fileFullPath = savePath + fileName;
-				// front에서 파일 저장 경로를 src 값으로 넣을 수 있도록 주소 저장
-				System.out.println("fileFullPath"+fileFullPath);
+		Long postNo = null;
+		String fileFullPath = null;
+		
+		for(MultipartFile file : files) {
+			// front에서 파일 저장 경로를 src 값으로 넣을 수 있도록 주소 저장
+			String fileName = UUID.randomUUID().toString() + file.getOriginalFilename();
+			
+			if(file.getSize() == 0) {
+				System.out.println("file없음");
+				break;
+			}else {
+				// post 객체에 값 저장
+				Post post = Post.builder()
+						.postLat(Double.parseDouble(postLat))
+						.postLong(Double.parseDouble(postLong))
+						.postContent(content)
+						.postImg(fileName)
+						.build();
+				postNo = postService.save(post);
 				
-				
-				if(file.getSize() == 0) {
-					System.out.println("file없음");
-					break;
-				}else {
-					// post 객체에 값 저장
-					Post post = Post.builder()
-							.postContent(content)
-							.postImg(fileFullPath)
-							.build();
-					
-					postRepo.save(post);
-					System.out.println("post 저장 완료(postNo) : " + postRepo.save(post).getPostNo());
-					
-					// 디렉토리에 파일 저장
-					try {
-						file.transferTo(new File(savePath + "\\" + fileName));
-					} catch (IllegalStateException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				try {
+					// 디렉토리에 파일 저장 - react>public>img 폴더를 절대경로로 지정
+					file.transferTo(new File("C:\\dev\\gugu\\final_999_react\\public\\img\\" + fileName));
+				} catch (IllegalStateException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
+		System.out.println("post 저장 완료(postNo) : " + postNo);
+		return postNo;
 	}
 	
 	
@@ -90,10 +89,9 @@ public class PostController {
 				.size(size)
 				.build();
 		// pageable 객체에 넣은 post 전체 데이터
-//		PageResultDTO pageResultDTO2 = diaryService.getList(requestDTO2);
-//		System.out.println(pageResultDTO2);
-//		return pageResultDTO2;
-		return null;
+		PageResultDTO pageResultDTO2 = postService.getList(requestDTO2);
+		System.out.println("pageREsult:"+pageResultDTO2);
+		return pageResultDTO2;
 	}
 	
 
