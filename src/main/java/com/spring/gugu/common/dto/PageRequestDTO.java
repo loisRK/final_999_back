@@ -24,7 +24,7 @@ public class PageRequestDTO {
 	}
 	
 	public Pageable getPageable() {
-		return PageRequest.of(page-1, size, Sort.by("no").descending());
+		return PageRequest.of(page-1, size, Sort.by("postNo").descending());
 	}
 	
 	

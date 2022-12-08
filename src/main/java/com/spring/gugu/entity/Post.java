@@ -1,11 +1,7 @@
 package com.spring.gugu.entity;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,13 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import com.spring.gugu.dto.PostDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,17 +49,17 @@ public class Post {
 	 */
 	@Column(name = "post_date", updatable = false)
 	@CreationTimestamp
-	private Timestamp postDate;
+	private LocalDateTime postDate;
 
 	@LastModifiedDate
 	@Column(name = "modified_date")
 	private LocalDateTime modifiedDate;
 	
 	@Column(name = "post_lat")
-	private int postLat;
+	private Double postLat;
 	
 	@Column(name = "post_long")
-	private int postLong;
+	private Double postLong;
 	
 	@Column(name = "post_content")
 	private String postContent;
@@ -76,4 +73,23 @@ public class Post {
 //	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
 //	private List<Like> likes = new ArrayList<Like>();
 
+	public static PostDTO entityToDTO(Post post) {
+		PostDTO postDTO = PostDTO.builder()
+								.postNo(post.getPostNo())
+								.user(post.getUser())
+								.postContent(post.getPostContent())
+								.postDate(post.getPostDate())
+								.modifiedDate(post.getModifiedDate())
+								.postLat(post.getPostLat())
+								.postLong(post.getPostLong())
+								.likeCnt(post.getLikeCnt())
+								.postImg(post.getPostImg())
+								.build();
+		return postDTO;
+	}
+	
+	public void updatePost(String postContent, String postImg) {
+		this.postContent = postContent;
+		this.postImg = postImg;
+	}
 }
