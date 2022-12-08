@@ -61,6 +61,7 @@ public class DiaryController {
 //	@Autowired
 	final FileServiceImpl fileService;
 	
+	// 다이어리 작성하기
 	@PostMapping("/diary")
 	public void insertDiary(@RequestParam("file") List<MultipartFile> files, @RequestParam("title") String title, @RequestParam("content") String content) {
 		logger.info("다이어리 컨트롤러 : insert request");
@@ -72,6 +73,7 @@ public class DiaryController {
 		}
 	}
 	
+	// 다이어리 내용 불러오기
 	@GetMapping("/diary/{diaryNo}")
 	public DiaryDTO getDiary(@PathVariable Long diaryNo) {
 		logger.info("다이어리 get : " + diaryNo);
@@ -80,7 +82,7 @@ public class DiaryController {
 		return diaryDTO;
 	}
 	
-	// diary update
+	// 다이어리 내용 수정하기
 	@PutMapping("/updateDiary/{diaryNo}")
 	public void updateDiary(@PathVariable("diaryNo") Long diaryNo,
 			@RequestParam("title") String title,
@@ -136,7 +138,8 @@ public class DiaryController {
 	}
 	
 	@GetMapping("/diaryPage")
-	public PageResultDTO diaryPage(@RequestParam("page") int pageNo, @RequestParam("size") int size) {
+	public PageResultDTO diaryPage(@RequestParam("page") int pageNo,
+			@RequestParam("size") int size) {
 		PageRequestDTO requestDTO2 = PageRequestDTO.builder()
 				.page(pageNo)
 				.size(size)

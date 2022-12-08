@@ -15,8 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.gugu.dto.FileDTO;
 import com.spring.gugu.entity.Diary;
 import com.spring.gugu.entity.FileEntity;
+import com.spring.gugu.entity.Post;
 import com.spring.gugu.repository.DiaryRepository;
 import com.spring.gugu.repository.FileRepository;
+import com.spring.gugu.repository.PostRepository;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -25,7 +27,12 @@ public class FileServiceImpl implements FileService {
 	
 	@Autowired
 	DiaryRepository diaryRepo;
+	
+	@Autowired
+	PostRepository postRepo;
 
+	
+	
 	@Override
 	public void insertFile(List<MultipartFile> files, Long diaryNo) {
 		Diary diary = diaryRepo.getById(diaryNo);

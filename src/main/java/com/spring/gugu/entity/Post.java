@@ -65,7 +65,7 @@ public class Post {
 	private int postLong;
 	
 	@Column(name = "post_content")
-	private String psotContent;
+	private String postContent;
 	
 	@Column(name = "like_cnt")
 	private int likeCnt;
