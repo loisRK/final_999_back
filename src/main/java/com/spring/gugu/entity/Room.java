@@ -17,6 +17,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.spring.gugu.dto.RoomDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +37,7 @@ public class Room {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "room_no")
-	private long roomNo;
+	private Long roomNo;
 	
 	// user table - user_id FK
 	// fetchtype.EAGER : 즉시 로딩, 코드 실행 시 참조되는 쿼리도 즉시 실행하는 것
@@ -45,10 +47,10 @@ public class Room {
 	private User user;
 	
 	@Column(name = "chat_lat")
-	private int chatLat;
+	private double chatLat;
 	
 	@Column(name = "chat_long")
-	private int chatLong;
+	private double chatLong;
 	
 	@Column(name = "user_cnt")
 	private long userCnt;
@@ -58,6 +60,20 @@ public class Room {
 	@Column(name = "created_at")
 	@CreationTimestamp
 	private Timestamp createdAt;
+	
+	public static RoomDTO entityToDTO(Room room) {
+		RoomDTO roomDTO = RoomDTO.builder()
+								.user(room.getUser())
+								.chatLat(room.getChatLat())
+								.chatLong(room.getChatLong())
+								.userCnt(room.getUserCnt())
+								.category(room.getCategory())
+								.createdAt(room.getCreatedAt())
+								.build();
+		return roomDTO;
+						
+																
+	}
 	
 
 }
