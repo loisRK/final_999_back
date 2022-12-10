@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 import com.spring.gugu.common.dto.PageRequestDTO;
 import com.spring.gugu.common.dto.PageResultDTO;
+import com.spring.gugu.dto.LikeTableDTO;
 import com.spring.gugu.dto.PostDTO;
 import com.spring.gugu.entity.Post;
 
@@ -17,7 +18,8 @@ public interface PostService {
 	
 	void postDTOUpdate(Long postNo, String content, String postImg);
 
-	
-
 	public void deletePost(Long postNo);
+
+	// 좋아요 추가
+	public Long addLike(Long postNo, Long userId, int afterLike);
 }
