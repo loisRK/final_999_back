@@ -37,5 +37,9 @@ public class PostServiceImpl implements PostService {
 		return postRepo.save(post).getPostNo();
 	}
 
+	@Override
+	public void deletePost(Long postNo) {
+		postRepo.deleteById(postNo);
+	}
 	
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,5 +95,10 @@ public class PostController {
 		return pageResultDTO2;
 	}
 	
+	// 포스트 제거하기
+	@DeleteMapping("/postDelete")
+	public void deleteDiary(@RequestParam("postNo") Long postNo) {
+		postService.deletePost(postNo);
+	}
 
 }
