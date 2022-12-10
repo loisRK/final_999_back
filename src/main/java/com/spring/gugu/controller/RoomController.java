@@ -3,13 +3,14 @@ package com.spring.gugu.controller;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.gugu.dto.RoomDTO;
-import com.spring.gugu.entity.Room;
 import com.spring.gugu.entity.User;
 import com.spring.gugu.service.RoomServiceImpl;
 
@@ -20,6 +21,7 @@ import com.spring.gugu.service.RoomServiceImpl;
 //@RequiredArgsConstructor
 public class RoomController {
 	
+	// 객체 생성
 	@Autowired
 	RoomServiceImpl roomService;
 	
@@ -37,6 +39,14 @@ public class RoomController {
 		System.out.println("roomDTO" + roomDTO);
 		roomService.insertRoom(roomDTO);				
 		
+	}
+	
+	// 채팅방 (room)정보 전부 가져오기.
+	@GetMapping("/room/{roomNo}")
+	public RoomDTO roomInfo(@PathVariable Long roomNo) {
+		RoomDTO roomDTO = null;
+		roomDTO = roomService.roomInfo(roomNo);
+		return roomDTO;
 	}
 	
 	

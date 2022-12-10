@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -14,23 +15,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.spring.gugu.common.dto.PageRequestDTO;
 import com.spring.gugu.common.dto.PageResultDTO;
+import com.spring.gugu.dto.LikeTableDTO;
 import com.spring.gugu.dto.PostDTO;
-import com.spring.gugu.config.jwt.JwtProperties;
 import com.spring.gugu.dto.UserDTO;
 //import com.spring.gugu.entity.Like;
 import com.spring.gugu.entity.Post;
-import com.spring.gugu.service.FileServiceImpl;
-import com.spring.gugu.entity.User;
 import com.spring.gugu.service.FileServiceImpl;
 import com.spring.gugu.service.KakaoServiceImpl;
 import com.spring.gugu.service.PostServiceImpl;
@@ -58,9 +55,6 @@ public class PostController {
 						HttpServletRequest request) {
 		
 		Long postNo = null;
-		String fileFullPath = null;
-		System.out.println("postContent" + content);
-		System.out.println("postLat" + postLat);
 		
 		// localStroage의 user_id로  user 정보 get 
 		Long kakaoId = (Long)request.getAttribute("userCode");
@@ -71,14 +65,12 @@ public class PostController {
 		// file이 있는 경우 file upload 후 fileName 반환
 		String fileName = fileService.uploadFile(files);	
 		
-		// like entity 에서 like 개수 조회해 Post 객체에 넣어주는 likeService 필요
-		
-		
 		Post post = Post.builder()
 				.user(UserDTO.dtoToEntity(userDTO))
 				.postLat(Double.parseDouble(postLat))
 				.postLong(Double.parseDouble(postLong))
 				.postContent(content)
+				.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
 				.postImg(fileName)
 				.build();
 		
@@ -159,18 +151,17 @@ public class PostController {
 		postService.deletePost(postNo);
 	}
 
-//	@GetMapping("/clickLike")
-//	public int countLike(Long kakaoId, Long postNo, int afterLike) {
-//		kakaoId = 2560503522L;
-//		postNo = 10L;
-//		
-//		User user = userService.getUserById(kakaoId);
-//		Post post = postService.getById(postNo);
-//		
-//		Like like = Like.likeId(user, post);
-//		
-//		return 0;
-//	}
+	// 좋아요 누르기
+	@PostMapping("/addLike")
+	public Long countLike(
+			@RequestParam("postNo") String postNo, 
+			@RequestParam("userId") String userId,
+			@RequestParam("afterLike") int afterLike) {
+		
+		Long likeCnt = postService.addLike(Long.parseLong(postNo), Long.parseLong(userId), (int)afterLike);
+		
+		return likeCnt;
+	}
 	
 	
 	  // 모든 포스트 불러오기 
