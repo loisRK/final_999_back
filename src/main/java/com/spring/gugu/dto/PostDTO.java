@@ -1,11 +1,8 @@
 package com.spring.gugu.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.gugu.entity.Post;
-import com.spring.gugu.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,22 +16,28 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "user")
+@ToString(exclude = "userDTO")
 public class PostDTO {
 	private Long postNo;
-	@JsonIgnore
-	private User user;
+	private UserDTO userDTO;
 	private LocalDateTime postDate;
 	private LocalDateTime modifiedDate;
 	private Double postLat;
 	private Double postLong;
 	private String postContent;
-	private int likeCnt;
+	private Long likeCnt;
 	private String postImg;
 	
 	public static Post dtoToEntity(PostDTO postDTO) {
 		Post post = Post.builder()
+						.postNo(postDTO.getPostNo())
+						.user(UserDTO.dtoToEntity(postDTO.getUserDTO()))
+						.postDate(postDTO.getPostDate())
+						.modifiedDate(postDTO.getModifiedDate())
+						.postLat(postDTO.getPostLat())
+						.postLong(postDTO.getPostLong())
 						.postContent(postDTO.getPostContent())
+						.likeCnt(postDTO.getLikeCnt())
 						.postImg(postDTO.getPostImg())
 						.build();
 		return post;
