@@ -1,6 +1,9 @@
 package com.spring.gugu.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,7 +11,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,10 +24,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.spring.gugu.common.dto.PageRequestDTO;
 import com.spring.gugu.common.dto.PageResultDTO;
+import com.spring.gugu.dto.PostDTO;
 import com.spring.gugu.config.jwt.JwtProperties;
 import com.spring.gugu.dto.UserDTO;
 //import com.spring.gugu.entity.Like;
 import com.spring.gugu.entity.Post;
+import com.spring.gugu.service.FileServiceImpl;
 import com.spring.gugu.entity.User;
 import com.spring.gugu.service.FileServiceImpl;
 import com.spring.gugu.service.KakaoServiceImpl;
@@ -51,6 +58,9 @@ public class PostController {
 						HttpServletRequest request) {
 		
 		Long postNo = null;
+		String fileFullPath = null;
+		System.out.println("postContent" + content);
+		System.out.println("postLat" + postLat);
 		
 		// localStroage의 user_id로  user 정보 get 
 		Long kakaoId = (Long)request.getAttribute("userCode");
@@ -94,6 +104,52 @@ public class PostController {
 		System.out.println("pageREsult:"+pageResultDTO2);
 		
 		return pageResultDTO2;
+	}
+	
+	
+	// 포스트 내용 불러오기 
+	@GetMapping("/post/{postNo}")
+	public PostDTO getPost(@PathVariable Long postNo) {
+		System.out.println("포스트 내용 불러오기");
+		PostDTO postDTO = null;
+		postDTO = postService.getPostByNo(postNo);
+		return postDTO;
+	}
+	
+	// 포스트 내용 수정하기 
+	@PutMapping("/updatePost/{postNo}")
+	public void updatePost(@PathVariable("postNo") Long postNo,
+			@RequestParam("content") String content,
+			@RequestParam(name = "files", required = false) List<MultipartFile> files) {
+		
+		System.out.println("#################포스트 수정");
+		
+		for(MultipartFile file : files) {
+			System.out.println("#################포스트 수정");
+			System.out.println("content :" + content + "postImg" +files);
+			
+			// front에서 파일 저장 경로를 src 값으로 넣을 수 있도록 주소 저장
+			String fileName = UUID.randomUUID().toString() + file.getOriginalFilename();
+			
+			
+			if(file.getSize() == 0) {
+				System.out.println("file없음");
+				break;
+			}else {
+				// post 객체에 값 저장
+				postService.postDTOUpdate(postNo, content, fileName);
+				
+				try {
+					// 디렉토리에 파일 저장 - react>public>img 폴더를 절대경로로 지정
+					file.transferTo(new File("C:\\dev\\gugu\\final_999_react\\public\\img\\" + fileName));
+				} catch (IllegalStateException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
 	}
 	
 
