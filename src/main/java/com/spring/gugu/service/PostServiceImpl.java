@@ -75,18 +75,7 @@ public class PostServiceImpl implements PostService {
       return postRepo.getById(postNo);
    }
    
-   @Override
-   public List<PostDTO> findAll() {
-      List<Post> allPosts = postRepo.findAll();
-      
-      // Post 타입을 PostDTO로 타입으로 변경
-      Function<Post, PostDTO> fn = (post -> post.entityToDTO(post));
-      List<PostDTO> allPostDTOs = allPosts.stream()
-                                 .map(fn)
-                                 .collect(Collectors.toList());
-      
-      return allPostDTOs;
-   }
+
 
 	@Override
 	public Long addLike(Long postNo, Long userId, int afterLike) {
@@ -109,6 +98,20 @@ public class PostServiceImpl implements PostService {
 		
 		return likeCnt;
 	}
+
+	
+   @Override
+   public List<PostDTO> findAll() {
+      List<Post> allPosts = postRepo.findAll();
+      
+      // Post 타입을 PostDTO로 타입으로 변경
+      Function<Post, PostDTO> fn = (post -> post.entityToDTO(post));
+      List<PostDTO> allPostDTOs = allPosts.stream()
+                                 .map(fn)
+                                 .collect(Collectors.toList());
+      
+      return allPostDTOs;
+   }
 
 	
 }

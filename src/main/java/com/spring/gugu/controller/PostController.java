@@ -163,7 +163,7 @@ public class PostController {
 		return likeCnt;
 	}
 	
-	
+
 	  // 모든 포스트 불러오기 
 	  @GetMapping("/postList")
 	  public List<PostDTO> getAllposts() {

@@ -37,12 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
 
     // @Bean -> 해당 메소드의 리턴되는 오브젝트를 IoC로 등록해줌
+    // IoC : 의존성에 대한 제어권 -> 개발자가 직접 의존성을 만든다
     @Bean
     public BCryptPasswordEncoder encodePwd() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
+    // 취약점에 대한 보안이 필요할 경우 HttpSecurity 설정을 사용
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .sessionManagement()
