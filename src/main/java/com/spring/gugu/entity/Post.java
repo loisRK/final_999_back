@@ -1,7 +1,10 @@
 package com.spring.gugu.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,7 +32,7 @@ import lombok.ToString;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "likes")
 @Getter
 @Builder
 @Table(name = "post")
@@ -41,7 +45,7 @@ public class Post {
 	// user table - user_id FK
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	@NotFound(action = NotFoundAction.IGNORE) // 값이 발견되지 않으면 무시
+//	@NotFound(action = NotFoundAction.IGNORE) // 값이 발견되지 않으면 무시
 	private User user;
 	
 	/*

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.gugu.config.jwt.JwtProperties;
+import com.spring.gugu.dto.UserDTO;
 import com.spring.gugu.entity.User;
 import com.spring.gugu.model.OauthToken;
 import com.spring.gugu.service.KakaoServiceImpl;
@@ -48,15 +49,26 @@ public class KakaoController {
 	}
 	
     // jwt 토큰으로 유저정보 요청하기
+//    @GetMapping("/myPage")
+//    public ResponseEntity<Object> getCurrentUser(HttpServletRequest request) {
+//    	Long kakaoId = (Long) request.getAttribute("userCode");    	
+//    	System.out.println("kakaoID : " + kakaoId);
+//        User user = kakaoService.getUserById(kakaoId);
+//        System.out.println("##### USER " + user);
+//
+//        return ResponseEntity.ok().body(user);
+//    }
+    
     @GetMapping("/myPage")
     public ResponseEntity<Object> getCurrentUser(HttpServletRequest request) {
 //    	System.out.println("########## REQUEST " + request.getHeader("request"));
-    	    	
-        User user = kakaoService.getUser(request);
+    	
+        UserDTO userDTO = kakaoService.getUser(request);
 //        System.out.println("##### USER " + user);
 
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.ok().body(userDTO);
     }
+    
     
     @GetMapping("/kakaoLogout")
     public ResponseEntity<String> getLogout(HttpServletRequest request) {

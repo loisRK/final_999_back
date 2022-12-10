@@ -13,7 +13,9 @@ public interface KakaoRepository extends JpaRepository<User, Long>{
 	// JPA findBy 규칙
 	// select * from user_master where kakao_email = ?
 	public User findByKakaoEmail(String kakaoEmail);
-	
+
+	public User getUserByKakaoId(Long kakaoId);
+
 	// kakaoId로 user data 불러오기
 	public User findByKakaoId(Long kakaoId);
 }
