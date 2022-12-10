@@ -7,20 +7,32 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.gugu.dto.UserDTO;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
+@Getter
+@ToString(exclude = "posts")
+//entity 수정사항을 계속 확인하게 하는 annotation, @createdDate, @LastModifiedDate annoatation사용을 위한 설정
+@EntityListeners(AuditingEntityListener.class)	
 @Table(name = "user")
 public class User {
 	@Id
@@ -48,23 +60,38 @@ public class User {
 	@CreationTimestamp
 	private Timestamp createTime;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Post> posts = new ArrayList<Post>();
 	
-	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToOne(mappedBy = "user")
 	private Room room;
-	
+//	
 //	@OneToOne(mappedBy = "user", cascade = CascadeType.REFRESH)
 //	private Like like;
 
 	@Builder
 	public User(Long kakaoId, String kakaoNickname, String kakaoProfileImg,  
-			String kakaoEmail, String ageRange, String gender) {
+			String kakaoEmail, String ageRange, String gender, int postCnt) {
 		this.kakaoId = kakaoId;
 		this.kakaoNickname = kakaoNickname;
 		this.kakaoProfileImg = kakaoProfileImg;
 		this.kakaoEmail = kakaoEmail;
 		this.ageRange = ageRange;
 		this.gender = gender;
+		this.postCnt = postCnt;
+	}
+	
+	public static UserDTO entityToDTO(User user) {
+		UserDTO userDTO = UserDTO.builder()
+								.kakaoId(user.getKakaoId())
+								.kakaoNickname(user.getKakaoNickname())
+								.kakaoProfileImg(user.getKakaoProfileImg())
+								.kakaoEmail(user.getKakaoEmail())
+								.ageRange(user.getAgeRange())
+								.gender(user.getGender())
+								.postCnt(user.getPostCnt())
+								.build();
+		return userDTO;
 	}
 }

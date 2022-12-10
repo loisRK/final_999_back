@@ -3,6 +3,8 @@ package com.spring.gugu.service;
 import java.net.URI;
 import java.util.Base64;
 import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -30,6 +32,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.gugu.config.jwt.JwtProperties;
+import com.spring.gugu.dto.UserDTO;
 import com.spring.gugu.entity.User;
 import com.spring.gugu.model.KakaoProfile;
 import com.spring.gugu.model.OauthToken;
@@ -183,14 +186,22 @@ public class KakaoServiceImpl implements KakaoService {
 	/*
 	 * kakao 로그인 시 저장된 user_id(kakaoId)로 회원 정보 불러오는 메소드
 	 */
-//	@Transactional
 	@Override
-	public User getUser(HttpServletRequest request) {
+	public UserDTO getUser(HttpServletRequest request) {
         Long kakaoId = (Long) request.getAttribute("userCode");
+        System.out.println("kakaoId:"+kakaoId);
         User user = kakaoRepo.findByKakaoId(kakaoId);
+        UserDTO userDTO = User.entityToDTO(user);
+        return userDTO;
+	}
+	
+	@Override
+	public User getUserById(Long kakaoId) {
+		System.out.println(kakaoId + ": userID(kakaoservice)");
+        User user = kakaoRepo.getUserByKakaoId(kakaoId);
         return user;
 	}
-
+	
 	
 	/*
 	 * 로그아웃 메소드 - kakao logout API 호출
