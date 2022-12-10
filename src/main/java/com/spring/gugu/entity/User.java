@@ -61,15 +61,11 @@ public class User {
 	private Timestamp createTime;
 	
 	@OneToMany(mappedBy = "user")
-	@JsonIgnore
 	private List<Post> posts = new ArrayList<Post>();
 	
 	@OneToOne(mappedBy = "user")
 	private Room room;
-//	
-//	@OneToOne(mappedBy = "user", cascade = CascadeType.REFRESH)
-//	private Like like;
-
+	
 	@Builder
 	public User(Long kakaoId, String kakaoNickname, String kakaoProfileImg,  
 			String kakaoEmail, String ageRange, String gender, int postCnt) {
