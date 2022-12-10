@@ -31,7 +31,27 @@ public class FileServiceImpl implements FileService {
 	@Autowired
 	PostRepository postRepo;
 
-	
+	public String uploadFile(List<MultipartFile> files) {
+		String fileName = "";
+		if(files != null) {
+			for(MultipartFile file : files) {
+			// front에서 파일 저장 경로를 src 값으로 넣을 수 있도록 주소 저장
+			fileName = UUID.randomUUID().toString() + file.getOriginalFilename();
+			
+				try {
+					// 디렉토리에 파일 저장 - react>public>img 폴더를 절대경로로 지정
+					file.transferTo(new File("C:\\dev\\gugu\\final_999_react\\public\\img\\" + fileName));
+				} catch (IllegalStateException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}else {
+			fileName = "";
+		}
+		
+		return fileName;
+	}
 	
 	@Override
 	public void insertFile(List<MultipartFile> files, Long diaryNo) {

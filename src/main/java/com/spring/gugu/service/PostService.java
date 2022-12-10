@@ -19,4 +19,5 @@ public interface PostService {
 
 	
 
+	public void deletePost(Long postNo);
 }
