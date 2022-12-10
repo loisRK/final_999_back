@@ -80,7 +80,7 @@ public class Post {
 	public static PostDTO entityToDTO(Post post) {
 		PostDTO postDTO = PostDTO.builder()
 								.postNo(post.getPostNo())
-								.user(post.getUser())
+								.userDTO(User.entityToDTO(post.getUser()))
 								.postContent(post.getPostContent())
 								.postDate(post.getPostDate())
 								.modifiedDate(post.getModifiedDate())

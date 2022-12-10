@@ -3,9 +3,7 @@ package com.spring.gugu.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.gugu.entity.Post;
-import com.spring.gugu.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +17,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "user")
+@ToString(exclude = "userDTO")
 public class PostDTO {
 	private Long postNo;
-	@JsonIgnore
-	private User user;
+	private UserDTO userDTO;
 	private LocalDateTime postDate;
 	private LocalDateTime modifiedDate;
 	private Double postLat;

@@ -61,7 +61,6 @@ public class User {
 	private Timestamp createTime;
 	
 	@OneToMany(mappedBy = "user")
-	@JsonIgnore
 	private List<Post> posts = new ArrayList<Post>();
 	
 	@OneToOne(mappedBy = "user")
