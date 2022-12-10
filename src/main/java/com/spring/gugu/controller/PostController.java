@@ -172,5 +172,12 @@ public class PostController {
 //		return 0;
 //	}
 	
+	@GetMapping("/postList")
+	public List<PostDTO> getAllPosts() {
+		List<PostDTO> allPosts = postService.findAll();
+		System.out.println("#####" + allPosts);
+		return allPosts;
+	}
+	
 
 }

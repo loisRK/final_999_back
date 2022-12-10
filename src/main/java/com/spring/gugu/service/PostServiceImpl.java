@@ -1,7 +1,9 @@
 package com.spring.gugu.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -62,6 +64,17 @@ public class PostServiceImpl implements PostService {
 	public Post getById(Long postNo) {
 		// TODO Auto-generated method stub
 		return postRepo.getById(postNo);
+	}
+
+	@Override
+	public List<PostDTO> findAll() {
+		List<Post> allPosts = postRepo.findAll();
+		
+		Function<Post, PostDTO> fn = (post -> post.entityToDTO(post));
+		List<PostDTO> allPostDTOs = allPosts.stream()
+											.map(fn)
+											.collect(Collectors.toList());
+		return allPostDTOs;
 	}
 
 	

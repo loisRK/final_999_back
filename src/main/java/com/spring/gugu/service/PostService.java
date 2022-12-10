@@ -1,6 +1,6 @@
 package com.spring.gugu.service;
 
-import java.util.NoSuchElementException;
+import java.util.List;
 
 import com.spring.gugu.common.dto.PageRequestDTO;
 import com.spring.gugu.common.dto.PageResultDTO;
@@ -16,6 +16,8 @@ public interface PostService {
 	public PostDTO getPostByNo(Long postNo);
 	
 	void postDTOUpdate(Long postNo, String content, String postImg);
+	
+	public List<PostDTO> findAll();
 
 	
 
