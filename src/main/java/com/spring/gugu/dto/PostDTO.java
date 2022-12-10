@@ -1,7 +1,6 @@
 package com.spring.gugu.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.spring.gugu.entity.Post;
 
@@ -26,12 +25,19 @@ public class PostDTO {
 	private Double postLat;
 	private Double postLong;
 	private String postContent;
-	private int likeCnt;
+	private Long likeCnt;
 	private String postImg;
 	
 	public static Post dtoToEntity(PostDTO postDTO) {
 		Post post = Post.builder()
+						.postNo(postDTO.getPostNo())
+						.user(UserDTO.dtoToEntity(postDTO.getUserDTO()))
+						.postDate(postDTO.getPostDate())
+						.modifiedDate(postDTO.getModifiedDate())
+						.postLat(postDTO.getPostLat())
+						.postLong(postDTO.getPostLong())
 						.postContent(postDTO.getPostContent())
+						.likeCnt(postDTO.getLikeCnt())
 						.postImg(postDTO.getPostImg())
 						.build();
 		return post;
