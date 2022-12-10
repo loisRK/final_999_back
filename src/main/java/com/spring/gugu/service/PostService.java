@@ -11,4 +11,5 @@ public interface PostService {
 
 	public Long save(Post post);
 
+	public void deletePost(Long postNo);
 }

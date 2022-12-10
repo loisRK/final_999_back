@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -95,6 +96,13 @@ public class PostController {
 		return pageResultDTO2;
 	}
 	
+
+	// 포스트 제거하기
+	@DeleteMapping("/postDelete")
+	public void deleteDiary(@RequestParam("postNo") Long postNo) {
+		postService.deletePost(postNo);
+	}
+
 //	@GetMapping("/clickLike")
 //	public int countLike(Long kakaoId, Long postNo, int afterLike) {
 //		kakaoId = 2560503522L;
