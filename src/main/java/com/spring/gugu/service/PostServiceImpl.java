@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
 		Page<Post> result = postRepo.findAll(pageable);
 		System.out.println("Page<Post>:" + result);
 		// Post 타입을 PostDTO 타입으로 변경해 저장하는 function 정의
-		Function<Post, PostDTO> fn = (post -> post.entityToDTO(post));
+		Function<Post, PostDTO> fn = (post -> Post.entityToDTO(post));
 		// PageResultDTO 객체에 페이지에 담을 내용인 result값과 EntitytoDTO변경을 위한 function을 전달
 		return new PageResultDTO<PostDTO, Post>(result, fn);
 	}
@@ -35,6 +35,11 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Long save(Post post) {
 		return postRepo.save(post).getPostNo();
+	}
+
+	public Post getById(Long postNo) {
+		// TODO Auto-generated method stub
+		return postRepo.getById(postNo);
 	}
 
 	
