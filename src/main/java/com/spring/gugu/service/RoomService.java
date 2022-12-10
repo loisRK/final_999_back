@@ -6,5 +6,7 @@ import com.spring.gugu.entity.Room;
 public interface RoomService {
 	
 	public void insertRoom(RoomDTO roomDTO);
+	
+	public RoomDTO roomInfo(Long roomNo);
 
 }
