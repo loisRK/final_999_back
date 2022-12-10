@@ -31,7 +31,7 @@ public class KakaoController {
 		
 		// 넘겨온 인가코드를 통해 access_token 발급
 		OauthToken oauthToken = kakaoService.getAccessToken(code);
-//		System.out.println("################################ oauthToken : " + oauthToken.toString());
+		System.out.println("################################ oauthToken : " + oauthToken.toString());
 		
 		// 발급 받은 accessToken으로 카카오 회원 정보를 DB에 저장 후 JWT를 생성
 		String jwtToken = kakaoService.SaveUserAndGetToken(oauthToken.getAccess_token());

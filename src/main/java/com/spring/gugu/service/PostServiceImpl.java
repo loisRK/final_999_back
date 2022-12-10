@@ -1,6 +1,9 @@
 package com.spring.gugu.service;
 
+import java.util.NoSuchElementException;
 import java.util.function.Function;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +38,21 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Long save(Post post) {
 		return postRepo.save(post).getPostNo();
+	}
+
+	@Override
+	public PostDTO getPostByNo(Long postNo) throws NoSuchElementException{
+		Post post = postRepo.findById(postNo).orElseThrow(NoSuchElementException::new);
+		PostDTO postDTO = Post.entityToDTO(post);
+		return postDTO;
+	}
+
+	@Override
+	@Transactional
+	public void postDTOUpdate(Long postNo, String content, String postImg) throws NoSuchElementException{
+		Post post = postRepo.findById(postNo).orElseThrow(NoSuchElementException::new);
+		post.updatePost(content, postImg);
+		System.out.println("#####################  변경 된 내용 : " + post.getPostContent());
 	}
 
 	
