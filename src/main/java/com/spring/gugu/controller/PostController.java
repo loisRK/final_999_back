@@ -163,5 +163,13 @@ public class PostController {
 		return likeCnt;
 	}
 	
+	
+	  // 모든 포스트 불러오기 
+	  @GetMapping("/postList")
+	  public List<PostDTO> getAllposts() {
+	     List<PostDTO> allPosts = postService.findAll();
+	     System.out.println("####################allPosts" + allPosts);
+	     return allPosts;
+	  }	
 
 }

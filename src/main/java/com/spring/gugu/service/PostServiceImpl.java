@@ -1,7 +1,9 @@
 package com.spring.gugu.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -39,7 +41,7 @@ public class PostServiceImpl implements PostService {
 		// Post타입의 Page 객체 생성
 		Page<Post> result = postRepo.findAll(pageable);
 		// Post 타입을 PostDTO 타입으로 변경해 저장하는 function 정의
-		Function<Post, PostDTO> fn = (post -> Post.entityToDTO(post));
+		Function<Post, PostDTO> fn = (post -> post.entityToDTO(post));
 		// PageResultDTO 객체에 페이지에 담을 내용인 result값과 EntitytoDTO변경을 위한 function을 전달
 		return new PageResultDTO<PostDTO, Post>(result, fn);
 	}
@@ -56,21 +58,35 @@ public class PostServiceImpl implements PostService {
 		return postDTO;
 	}
 
-	@Override
-	@Transactional
-	public void postDTOUpdate(Long postNo, String content, String postImg) throws NoSuchElementException{
-		Post post = postRepo.findById(postNo).orElseThrow(NoSuchElementException::new);
-		post.updatePost(content, postImg);
-		System.out.println("#####################  변경 된 내용 : " + post.getPostContent());
-	}
+   @Override
+   @Transactional
+   public void postDTOUpdate(Long postNo, String content, String postImg) throws NoSuchElementException{
+      Post post = postRepo.findById(postNo).orElseThrow(NoSuchElementException::new);
+      post.updatePost(content, postImg);
+      System.out.println("#####################  변경 된 내용 : " + post.getPostContent());
+   }
 
-	public void deletePost(Long postNo) {
-		postRepo.deleteById(postNo);
-	}
-	
-	public Post getById(Long postNo) {
-		return postRepo.getById(postNo);
-	}
+   public void deletePost(Long postNo) {
+	      postRepo.deleteById(postNo);
+	   }
+	   
+   public Post getById(Long postNo) {
+      // TODO Auto-generated method stub
+      return postRepo.getById(postNo);
+   }
+   
+   @Override
+   public List<PostDTO> findAll() {
+      List<Post> allPosts = postRepo.findAll();
+      
+      // Post 타입을 PostDTO로 타입으로 변경
+      Function<Post, PostDTO> fn = (post -> post.entityToDTO(post));
+      List<PostDTO> allPostDTOs = allPosts.stream()
+                                 .map(fn)
+                                 .collect(Collectors.toList());
+      
+      return allPostDTOs;
+   }
 
 	@Override
 	public Long addLike(Long postNo, Long userId, int afterLike) {
