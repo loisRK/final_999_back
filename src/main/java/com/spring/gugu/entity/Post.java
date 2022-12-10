@@ -32,7 +32,7 @@ import lombok.ToString;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "likes")
+@ToString
 @Getter
 @Builder
 @Table(name = "post")
@@ -69,18 +69,15 @@ public class Post {
 	private String postContent;
 	
 	@Column(name = "like_cnt")
-	private int likeCnt;
+	private Long likeCnt;
 	
 	@Column(name = "post_img")
 	private String postImg;
 	
-//	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-//	private List<Like> likes = new ArrayList<Like>();
-
 	public static PostDTO entityToDTO(Post post) {
 		PostDTO postDTO = PostDTO.builder()
 								.postNo(post.getPostNo())
-								.user(post.getUser())
+								.userDTO(User.entityToDTO(post.getUser()))
 								.postContent(post.getPostContent())
 								.postDate(post.getPostDate())
 								.modifiedDate(post.getModifiedDate())
@@ -95,5 +92,9 @@ public class Post {
 	public void updatePost(String postContent, String postImg) {
 		this.postContent = postContent;
 		this.postImg = postImg;
+	}
+	
+	public void addLike() {
+		this.likeCnt = this.likeCnt + 1;
 	}
 }
