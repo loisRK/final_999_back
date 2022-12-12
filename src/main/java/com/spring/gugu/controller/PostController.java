@@ -115,6 +115,11 @@ public class PostController {
 			@RequestParam(name = "files", required = false) List<MultipartFile> files) {
 		
 		System.out.println("#################포스트 수정");
+		System.out.println(files);
+		
+		if(files == null) {
+			postService.postDTOUpdate(postNo, content, "");
+		}
 		
 		for(MultipartFile file : files) {
 			System.out.println("#################포스트 수정");
@@ -139,18 +144,18 @@ public class PostController {
 					e.printStackTrace();
 				}
 			}
-			
 		}
-		
 	}
 	
 
 	// 포스트 제거하기
 	@DeleteMapping("/postDelete")
 	public void deleteDiary(@RequestParam("postNo") Long postNo) {
+		System.out.println("postNo : "+postNo);
 		postService.deletePost(postNo);
 	}
 
+	
 	// 좋아요 누르기
 	@PostMapping("/addLike")
 	public Long countLike(
