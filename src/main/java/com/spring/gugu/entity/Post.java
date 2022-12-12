@@ -74,6 +74,9 @@ public class Post {
 	@Column(name = "post_img")
 	private String postImg;
 	
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<LikeTable> likes;
+	
 	public static PostDTO entityToDTO(Post post) {
 		PostDTO postDTO = PostDTO.builder()
 								.postNo(post.getPostNo())
@@ -87,6 +90,10 @@ public class Post {
 								.postImg(post.getPostImg())
 								.build();
 		return postDTO;
+	}
+	
+	public void updatePost(String postContent) {
+		this.postContent = postContent;
 	}
 	
 	public void updatePost(String postContent, String postImg) {
