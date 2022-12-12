@@ -145,16 +145,17 @@ public class PostController {
 				}
 			}
 		}
-		
 	}
 	
 
 	// 포스트 제거하기
 	@DeleteMapping("/postDelete")
 	public void deleteDiary(@RequestParam("postNo") Long postNo) {
+		System.out.println("postNo : "+postNo);
 		postService.deletePost(postNo);
 	}
 
+	
 	// 좋아요 누르기
 	@PostMapping("/addLike")
 	public Long countLike(
