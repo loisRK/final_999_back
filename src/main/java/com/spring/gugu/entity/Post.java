@@ -101,7 +101,12 @@ public class Post {
 		this.postImg = postImg;
 	}
 	
+	// 좋아요 추가 메소드
 	public void addLike() {
 		this.likeCnt = this.likeCnt + 1;
+	}
+	// 좋아요 취소 메소드
+	public void minusLike() {
+		this.likeCnt = this.likeCnt - 1;
 	}
 }

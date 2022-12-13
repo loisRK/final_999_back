@@ -162,7 +162,7 @@ public class PostController {
 			@RequestParam("postNo") String postNo, 
 			@RequestParam("userId") String userId,
 			@RequestParam("afterLike") int afterLike) {
-		
+//		System.out.println("addlike");
 		Long likeCnt = postService.addLike(Long.parseLong(postNo), Long.parseLong(userId), (int)afterLike);
 		
 		return likeCnt;
@@ -176,5 +176,18 @@ public class PostController {
 	     System.out.println("####################allPosts" + allPosts);
 	     return allPosts;
 	  }	
+	  
+	  ///////////////////TagLibrary////////////////////
+	  @PostMapping("/tagTest")
+	  public void addTag(
+			  @RequestParam("tag1") String tag1, 
+			  @RequestParam("tag2") String tag2, 
+			  @RequestParam("tag3") String tag3, 
+			  @RequestParam("roomNo") String roomNo) {
+		  
+		  
+		  
+		  
+	  }
 
 }

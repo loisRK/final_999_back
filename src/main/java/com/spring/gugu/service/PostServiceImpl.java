@@ -83,18 +83,14 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Long addLike(Long postNo, Long userId, int afterLike) {
-//		System.out.println("likeDTO : "+likeTableDTO);
-//		Long likeNo = likeRepo.saveAndFlush(LikeTableDTO.dtoToEntity(likeTableDTO)).getLikeNo();
-//		System.out.println("likeNo : " + likeNo);
-//		Post post = postRepo.getById(likeRepo.getById(likeNo).getPost().getPostNo());
 		LikeTable likeTable = LikeTable.builder()
 										.post(postRepo.getById(postNo))
 										.user(userRepo.getById(userId))
 										.afterLike(afterLike)
 										.build();
 		
-		
 		Post post = likeRepo.saveAndFlush(likeTable).getPost();
+
 		post.addLike();
 		postRepo.save(post);
 		

@@ -20,7 +20,7 @@ public class RoomServiceImpl implements RoomService{
 		Room room = RoomDTO.dtoToEntity(roomDTO);
 		roomRepo.save(room);
 	}
-
+	
 	public RoomDTO roomInfo(Long roomNo) {
 		
 		Room room = roomRepo.getById(roomNo);
