@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.gugu.dto.UserDTO;
 
 import lombok.AllArgsConstructor;
@@ -58,10 +59,11 @@ public class User {
 	private Timestamp createTime;
 	
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Post> posts = new ArrayList<Post>();
 	
-	@OneToOne(mappedBy = "user")
-	private Room room;
+//	@OneToOne(mappedBy = "user")
+//	private Room room;
 	
 	@Builder
 	public User(Long kakaoId, String kakaoNickname, String kakaoProfileImg,  

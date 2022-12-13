@@ -7,5 +7,6 @@ import com.spring.gugu.entity.Room;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
-
+	
+	Room findByUser(String user_id);
 }
