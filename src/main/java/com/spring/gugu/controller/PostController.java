@@ -162,7 +162,7 @@ public class PostController {
 			@RequestParam("postNo") String postNo, 
 			@RequestParam("userId") String userId,
 			@RequestParam("afterLike") int afterLike) {
-		
+//		System.out.println("addlike");
 		Long likeCnt = postService.addLike(Long.parseLong(postNo), Long.parseLong(userId), (int)afterLike);
 		System.out.println("######## LIKECNT : " + afterLike + " " + likeCnt);
 		
@@ -184,7 +184,21 @@ public class PostController {
 	     return allPosts;
 	  }	
 	  
-	// 특정 유저의 모든 포스트 불러오기 
+	  ///////////////////TagLibrary////////////////////
+	  @PostMapping("/tagTest")
+	  public void addTag(
+			  @RequestParam("tag1") String tag1, 
+			  @RequestParam("tag2") String tag2, 
+			  @RequestParam("tag3") String tag3, 
+			  @RequestParam("roomNo") String roomNo) {
+		  
+		  
+		  
+		  
+	  }
+	  
+	  
+	  // 특정 유저의 모든 포스트 불러오기 
 	  @GetMapping("/userPosts/{userId}")
 	  public List<PostDTO> getUserposts(@PathVariable("userId") Long userId) {
 	     List<PostDTO> allPosts = postService.getPostsByUserId(userId);
