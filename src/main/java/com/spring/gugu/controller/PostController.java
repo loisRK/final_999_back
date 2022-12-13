@@ -116,7 +116,7 @@ public class PostController {
 		
 		System.out.println("#################포스트 수정");
 		System.out.println(files);
-		
+
 		if(files == null) {
 			postService.postDTOUpdate(postNo, content, "");
 		}
