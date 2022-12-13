@@ -9,6 +9,7 @@ import com.spring.gugu.common.dto.PageResultDTO;
 import com.spring.gugu.dto.LikeTableDTO;
 import com.spring.gugu.dto.PostDTO;
 import com.spring.gugu.entity.Post;
+import com.spring.gugu.entity.User;
 
 public interface PostService {
 	
@@ -26,4 +27,6 @@ public interface PostService {
 
 	// 좋아요 추가
 	public Long addLike(Long postNo, Long userId, int afterLike);
+	
+	public List<PostDTO> getPostsByUserId(Long userId);
 }

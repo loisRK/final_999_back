@@ -176,5 +176,13 @@ public class PostController {
 	     System.out.println("####################allPosts" + allPosts);
 	     return allPosts;
 	  }	
+	  
+	// 특정 유저의 모든 포스트 불러오기 
+	  @GetMapping("/userPosts/{userId}")
+	  public List<PostDTO> getUserposts(@PathVariable("userId") Long userId) {
+	     List<PostDTO> allPosts = postService.getPostsByUserId(userId);
+	     System.out.println("####################유저 포스트" + allPosts);
+	     return allPosts;
+	  }	
 
 }
