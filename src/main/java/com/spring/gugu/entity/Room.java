@@ -61,14 +61,19 @@ public class Room {
 	@CreationTimestamp
 	private Timestamp createdAt;
 	
+	@Column(name = "room_title")
+	private String title;
+	
 	public static RoomDTO entityToDTO(Room room) {
 		RoomDTO roomDTO = RoomDTO.builder()
+								.roomNo(room.getRoomNo())
 								.user(room.getUser())
 								.chatLat(room.getChatLat())
 								.chatLong(room.getChatLong())
 								.userCnt(room.getUserCnt())
 								.category(room.getCategory())
 								.createdAt(room.getCreatedAt())
+								.title(room.getTitle())
 								.build();
 		return roomDTO;
 						
