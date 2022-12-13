@@ -1,5 +1,7 @@
 package com.spring.gugu.controller;
 
+import java.util.List;
+
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.gugu.dto.PostDTO;
 import com.spring.gugu.dto.RoomDTO;
 import com.spring.gugu.entity.User;
 import com.spring.gugu.service.RoomServiceImpl;
@@ -27,18 +30,27 @@ public class RoomController {
 	
 	//채팅방 생성
 	@PostMapping("/room")
-	public void insertRoom(@RequestParam("userId") User user, @RequestParam("category") String category, @RequestParam("chatLat") double chatLat, @RequestParam("chatLong") double chatLong) {
+	public Long insertRoom(@RequestParam("userId") User user, @RequestParam("category") String category, @RequestParam("chatLat") double chatLat, @RequestParam("chatLong") double chatLong, @RequestParam("tag") String tag) {
 		
 		RoomDTO roomDTO = RoomDTO.builder()
 								.user(user)
 								.category(category)
 								.chatLat(chatLat)
 								.chatLong(chatLong)
+								.title(tag)
 								.build();
 		
 		System.out.println("roomDTO" + roomDTO);
-		roomService.insertRoom(roomDTO);				
+		return roomService.insertRoom(roomDTO);				
 		
+	}
+	
+	// 채팅방 리스트 모두 출력하기.
+	@GetMapping("/roomList")
+	public List<RoomDTO> getAllRooms() {
+		List<RoomDTO> allRooms = roomService.findall();
+		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$" + allRooms);
+		return allRooms;
 	}
 	
 	// 채팅방 (room)정보 전부 가져오기.
