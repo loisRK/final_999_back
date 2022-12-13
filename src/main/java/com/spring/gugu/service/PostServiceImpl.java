@@ -139,6 +139,21 @@ public class PostServiceImpl implements PostService {
 		
 //		return likeRepo.getAfterlikeByPostAndUser(postNo, userId);
 		return likeRepo.getAfterlikeByPostAndUser(post, user);
+  }
+
+	@Override
+	public List<PostDTO> getPostsByUserId(Long userId) {
+		User user = userRepo.getById(userId);
+		
+		List<Post> allPosts = postRepo.findAllByUser(user);
+		
+		
+		Function<Post, PostDTO> fn = (post -> post.entityToDTO(post));
+	      List<PostDTO> allPostDTOs = allPosts.stream()
+	                                 .map(fn)
+	                                 .collect(Collectors.toList());
+		
+		return allPostDTOs;
 	}
 
 	

@@ -10,12 +10,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class RoomDTO {
 	private Long roomNo;
 	private User user;
@@ -24,12 +26,14 @@ public class RoomDTO {
 	private long userCnt;
 	private String category;
 	private Timestamp createdAt;
+	private String title;
 	
-	public RoomDTO(User user, String category, double chatLat, double chatLong) {
+	public RoomDTO(User user, String category, double chatLat, double chatLong, String title) {
 		this.user = user;
 		this.category = category;
 		this.chatLat = chatLat;
 		this.chatLong = chatLong;
+		this.title = title;
 	}
 	
 	public static Room dtoToEntity(RoomDTO roomDTO) {
@@ -38,6 +42,7 @@ public class RoomDTO {
 				 		.category(roomDTO.getCategory())
 				 		.chatLat(roomDTO.getChatLat())
 				 		.chatLong(roomDTO.getChatLong())
+				 		.title(roomDTO.getTitle())
 				 		.build();
 		return room;
 	}
