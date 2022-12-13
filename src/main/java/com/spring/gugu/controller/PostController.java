@@ -164,10 +164,17 @@ public class PostController {
 			@RequestParam("afterLike") int afterLike) {
 		
 		Long likeCnt = postService.addLike(Long.parseLong(postNo), Long.parseLong(userId), (int)afterLike);
+		System.out.println("######## LIKECNT : " + afterLike + " " + likeCnt);
 		
 		return likeCnt;
 	}
 	
+	// 해당 유저의 좋아요 정보 가져오기
+	@GetMapping("/getLike")
+	public Long getLike(@RequestParam("postNo") Long postNo, @RequestParam("userId") Long userId) {
+		System.out.println("################# " + postNo + userId);
+		return postService.getLike(postNo, userId);
+	}
 
 	  // 모든 포스트 불러오기 
 	  @GetMapping("/postList")
