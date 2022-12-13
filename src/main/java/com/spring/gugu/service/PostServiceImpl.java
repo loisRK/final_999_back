@@ -18,6 +18,7 @@ import com.spring.gugu.dto.LikeTableDTO;
 import com.spring.gugu.dto.PostDTO;
 import com.spring.gugu.entity.LikeTable;
 import com.spring.gugu.entity.Post;
+import com.spring.gugu.entity.User;
 import com.spring.gugu.repository.KakaoRepository;
 import com.spring.gugu.repository.LikeRepository;
 import com.spring.gugu.repository.PostRepository;
@@ -87,20 +88,32 @@ public class PostServiceImpl implements PostService {
 //		Long likeNo = likeRepo.saveAndFlush(LikeTableDTO.dtoToEntity(likeTableDTO)).getLikeNo();
 //		System.out.println("likeNo : " + likeNo);
 //		Post post = postRepo.getById(likeRepo.getById(likeNo).getPost().getPostNo());
+		
+		System.out.println("##################### " + postNo + userId + afterLike);
 		LikeTable likeTable = LikeTable.builder()
-										.post(postRepo.getById(postNo))
-										.user(userRepo.getById(userId))
-										.afterLike(afterLike)
-										.build();
+				.post(postRepo.getById(postNo))
+				.user(userRepo.getById(userId))
+				.afterLike(afterLike)
+				.build();
 		
+		if(afterLike == 1) {
+			Post post = likeRepo.saveAndFlush(likeTable).getPost();
+			post.addLike();
+			postRepo.save(post);
+			
+			Long likeCnt = post.getLikeCnt();
+			
+			return likeCnt;
+		} else {
+			Post post = likeTable.getPost();
+			post.minusLike();
+			postRepo.save(post);
+			
+			Long likeCnt = post.getLikeCnt();
+			
+			return likeCnt;
+		}
 		
-		Post post = likeRepo.saveAndFlush(likeTable).getPost();
-		post.addLike();
-		postRepo.save(post);
-		
-		Long likeCnt = post.getLikeCnt();
-		
-		return likeCnt;
 	}
 
 	
@@ -116,6 +129,17 @@ public class PostServiceImpl implements PostService {
       
       return allPostDTOs;
    }
+
+	@Override
+	@Transactional
+	public Long getLike(Long postNo, Long userId) {
+		
+		Post post = postRepo.getById(postNo);
+		User user = userRepo.getById(userId);
+		
+//		return likeRepo.getAfterlikeByPostAndUser(postNo, userId);
+		return likeRepo.getAfterlikeByPostAndUser(post, user);
+	}
 
 	
 }

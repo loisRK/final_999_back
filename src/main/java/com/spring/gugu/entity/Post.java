@@ -104,4 +104,8 @@ public class Post {
 	public void addLike() {
 		this.likeCnt = this.likeCnt + 1;
 	}
+
+	public void minusLike() {
+		this.likeCnt = this.likeCnt - 1;
+	}
 }

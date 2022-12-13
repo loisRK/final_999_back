@@ -27,4 +27,6 @@ public interface PostService {
 
 	// 좋아요 추가
 	public Long addLike(Long postNo, Long userId, int afterLike);
+	
+	public Long getLike(Long postNo, Long userId);
 }
