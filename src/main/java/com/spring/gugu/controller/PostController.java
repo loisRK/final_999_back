@@ -62,7 +62,6 @@ public class PostController {
 		UserDTO userDTO = userService.getUser(request);
 //		System.out.println("----------user--------" + user);
 		
-		// file이 있는 경우 file upload 후 fileName 반환
 		String fileName = fileService.uploadFile(files);	
 		
 		Post post = Post.builder()
