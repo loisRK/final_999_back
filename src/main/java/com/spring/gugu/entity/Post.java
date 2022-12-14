@@ -3,6 +3,7 @@ package com.spring.gugu.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +22,9 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.gugu.dto.PostDTO;
 
 import lombok.AllArgsConstructor;
@@ -32,7 +36,7 @@ import lombok.ToString;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"likes"})
 @Getter
 @Builder
 @Table(name = "post")
@@ -46,6 +50,7 @@ public class Post {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 //	@NotFound(action = NotFoundAction.IGNORE) // 값이 발견되지 않으면 무시
+	@JsonBackReference
 	private User user;
 	
 	/*
@@ -75,7 +80,8 @@ public class Post {
 	private String postImg;
 	
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<LikeTable> likes;
+	@JsonIgnore
+	private List<LikeTable> likes = new ArrayList<LikeTable>();
 	
 	public static PostDTO entityToDTO(Post post) {
 		PostDTO postDTO = PostDTO.builder()
@@ -88,6 +94,7 @@ public class Post {
 								.postLong(post.getPostLong())
 								.likeCnt(post.getLikeCnt())
 								.postImg(post.getPostImg())
+								.likes(post.getLikes().stream().map(like -> LikeTable.entityToDTO(like)).collect(Collectors.toList()))
 								.build();
 		return postDTO;
 	}
@@ -101,7 +108,12 @@ public class Post {
 		this.postImg = postImg;
 	}
 	
+	// 좋아요 추가 메소드
 	public void addLike() {
 		this.likeCnt = this.likeCnt + 1;
+	}
+
+	public void minusLike() {
+		this.likeCnt = this.likeCnt - 1;
 	}
 }

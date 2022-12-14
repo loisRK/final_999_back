@@ -26,8 +26,11 @@ import com.spring.gugu.common.dto.PageResultDTO;
 import com.spring.gugu.dto.LikeTableDTO;
 import com.spring.gugu.dto.PostDTO;
 import com.spring.gugu.dto.UserDTO;
+import com.spring.gugu.entity.LikeTable;
 //import com.spring.gugu.entity.Like;
 import com.spring.gugu.entity.Post;
+import com.spring.gugu.repository.LikeRepository;
+import com.spring.gugu.repository.PostRepository;
 import com.spring.gugu.service.FileServiceImpl;
 import com.spring.gugu.service.KakaoServiceImpl;
 import com.spring.gugu.service.PostServiceImpl;
@@ -80,7 +83,7 @@ public class PostController {
 		return postNo;
 	}
 	
-	
+	final PostRepository postRepo;
 	// 모든 포스트 불러오기
 	@GetMapping("/postPage")
 	public PageResultDTO postPage(@RequestParam("page") int pageNo, @RequestParam("size") int size) {
@@ -93,6 +96,22 @@ public class PostController {
 		
 		// pageable 객체에 넣은 post 전체 데이터
 		PageResultDTO pageResultDTO2 = postService.getList(requestDTO2);
+		System.out.println("pageREsult:"+pageResultDTO2);
+		
+		return pageResultDTO2;
+	}
+	
+	@GetMapping("/postLikePage")
+	public PageResultDTO getPostLike(@RequestParam("page") int pageNo, @RequestParam("size") int size, @RequestParam("loginId") Long loginId) {
+		
+		// pagination을 위한 pageable 객체 생성
+		PageRequestDTO requestDTO2 = PageRequestDTO.builder()
+				.page(pageNo)
+				.size(size)
+				.build();
+		
+		// pageable 객체에 넣은 post 전체 데이터
+		PageResultDTO pageResultDTO2 = postService.getPostLike(requestDTO2, loginId);
 		System.out.println("pageREsult:"+pageResultDTO2);
 		
 		return pageResultDTO2;
@@ -162,18 +181,61 @@ public class PostController {
 			@RequestParam("postNo") String postNo, 
 			@RequestParam("userId") String userId,
 			@RequestParam("afterLike") int afterLike) {
-		
+//		System.out.println("addlike");
 		Long likeCnt = postService.addLike(Long.parseLong(postNo), Long.parseLong(userId), (int)afterLike);
+		System.out.println("######## LIKECNT : " + afterLike + " " + likeCnt);
 		
 		return likeCnt;
 	}
 	
+	// 좋아요 누르기 - 근영
+	@PostMapping("/addLikeCnt")
+	public Long addLikeCnt(
+			@RequestParam("postNo") String postNo, 
+			@RequestParam("userId") String userId,
+			@RequestParam("afterLike") int afterLike) {
+		System.out.println("---");
+		System.out.println("##################### " + postNo + " " +  userId + " " + afterLike);
+		Long likeCnt = postService.addLikeCnt(Long.parseLong(postNo), Long.parseLong(userId), afterLike);
+		System.out.println("######## LIKECNT : " + afterLike + " " + likeCnt);
+		
+		return likeCnt;
+	}
+	
+	// 해당 유저의 좋아요 정보 가져오기
+	@GetMapping("/getLike")
+	public Long getLike(@RequestParam("postNo") Long postNo, @RequestParam("userId") Long userId) {
+		System.out.println("################# " + postNo + userId);
+		return postService.getLike(postNo, userId);
+	}
 
 	  // 모든 포스트 불러오기 
 	  @GetMapping("/postList")
 	  public List<PostDTO> getAllposts() {
 	     List<PostDTO> allPosts = postService.findAll();
 	     System.out.println("####################allPosts" + allPosts);
+	     return allPosts;
+	  }	
+	  
+	  ///////////////////TagLibrary////////////////////
+	  @PostMapping("/tagTest")
+	  public void addTag(
+			  @RequestParam("tag1") String tag1, 
+			  @RequestParam("tag2") String tag2, 
+			  @RequestParam("tag3") String tag3, 
+			  @RequestParam("roomNo") String roomNo) {
+		  
+		  
+		  
+		  
+	  }
+	  
+	  
+	  // 특정 유저의 모든 포스트 불러오기 
+	  @GetMapping("/userPosts/{userId}")
+	  public List<PostDTO> getUserposts(@PathVariable("userId") Long userId) {
+	     List<PostDTO> allPosts = postService.getPostsByUserId(userId);
+	     System.out.println("####################유저 포스트" + allPosts);
 	     return allPosts;
 	  }	
 
