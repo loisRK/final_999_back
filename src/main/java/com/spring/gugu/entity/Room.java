@@ -80,5 +80,14 @@ public class Room {
 																
 	}
 	
+	// 새로운 비둘기 입장 
+	public void addClient() {
+		this.userCnt = this.userCnt + 1;
+	}
+	
+	// 배부른 비둘기 퇴장 ( 날아가기 )
+	public void exitClient() {
+		this.userCnt = this.userCnt - 1;
+	}
 
 }

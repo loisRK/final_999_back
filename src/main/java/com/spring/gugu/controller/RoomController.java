@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.gugu.dto.PostDTO;
+import com.spring.gugu.dto.ReportDTO;
 import com.spring.gugu.dto.RoomDTO;
 import com.spring.gugu.entity.User;
+import com.spring.gugu.service.ReportServiceImpl;
 import com.spring.gugu.service.RoomServiceImpl;
 
 @RestController		// 페이지 전환이 필요없으므로 restController 사용
@@ -27,6 +28,9 @@ public class RoomController {
 	// 객체 생성
 	@Autowired
 	RoomServiceImpl roomService;
+	
+	@Autowired
+	ReportServiceImpl reportService;
 	
 	//채팅방 생성
 	@PostMapping("/room")
@@ -62,5 +66,35 @@ public class RoomController {
 	}
 	
 	
+	// 채팅방 접속자수  ++
+	@GetMapping("/clientIn/{roomNo}")
+	public void clientIn(@PathVariable Long roomNo) {
+		roomService.clientIn(roomNo);
+	}
+	// 채팅방 접속자수  --
+	@GetMapping("/clientOut/{roomNo}")
+	public void clientOut(@PathVariable Long roomNo) {
+		roomService.clientOut(roomNo);
+	}
+	
+	
+	// 맘에들지 않는 둘기 신고하기
+	@PostMapping("/report")
+	public void insertReport(@RequestParam("roomNo") long roomNo, @RequestParam("message") String message, @RequestParam("reporterId") long reporterId, @RequestParam("reportedId") long reportedId) {
+		
+		// DTO 객체 생성.
+		ReportDTO reportDTO = ReportDTO.builder()
+				 					   .roomNo(roomNo)
+				 					   .message(message)
+				 					   .reporterId(reporterId)
+				 					   .reportedId(reportedId)
+				 					   .build();
+		
+		//잘 가져와 지는 것을 확인 !
+//		System.out.println(reportDTO);
+		
+		reportService.insertReport(reportDTO);
+	
+	}
 
 }

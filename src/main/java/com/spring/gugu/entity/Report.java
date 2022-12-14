@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +36,7 @@ public class Report {
 	private long roomNo;
 	
 	@Column(name = "reported_at")
+	@CreationTimestamp
 	private Timestamp reportedAt;
 	
 	private String message;
