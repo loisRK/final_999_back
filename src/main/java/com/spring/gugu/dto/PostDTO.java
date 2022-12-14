@@ -1,7 +1,10 @@
 package com.spring.gugu.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.spring.gugu.entity.LikeTable;
 import com.spring.gugu.entity.Post;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +30,7 @@ public class PostDTO {
 	private String postContent;
 	private Long likeCnt;
 	private String postImg;
+	private List<LikeTableDTO> likes = new ArrayList<LikeTableDTO>();
 	
 	public static Post dtoToEntity(PostDTO postDTO) {
 		Post post = Post.builder()
