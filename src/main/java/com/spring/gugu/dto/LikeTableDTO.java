@@ -18,10 +18,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"postDTO"})
 public class LikeTableDTO {
 	
 	private Long likeNo;
+//	private Long userId;
+//	private Long postNo;
 	private UserDTO userDTO;
 	private PostDTO postDTO;
 	private int afterlike;
@@ -29,6 +31,8 @@ public class LikeTableDTO {
 	public static LikeTable dtoToEntity(LikeTableDTO likeTableDTO) {
 		LikeTable likeTable = LikeTable.builder()
 						.likeNo(likeTableDTO.getLikeNo())
+//						.userId(likeTableDTO.getUserId())
+//						.postNo(likeTableDTO.getPostNo())
 						.user(UserDTO.dtoToEntity(likeTableDTO.getUserDTO()))
 						.post(PostDTO.dtoToEntity(likeTableDTO.getPostDTO()))
 						.afterLike(likeTableDTO.getAfterlike())
