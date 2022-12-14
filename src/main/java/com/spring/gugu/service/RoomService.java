@@ -14,5 +14,9 @@ public interface RoomService {
 	public RoomDTO roomNoInfo(String user_id);
 	
 	public List<RoomDTO> findall();
+	
+	public void clientIn(Long roomNo);
+
+	public void clientOut(Long roomNo);
 
 }

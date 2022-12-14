@@ -53,4 +53,18 @@ public class RoomServiceImpl implements RoomService{
 	      return allRoomDTOs;
 	}
 
+	// 채팅방에 새로운 client count ++
+	public void clientIn(Long roomNo) {
+		Room room = roomRepo.getById(roomNo);
+		room.addClient();
+		roomRepo.save(room);
+	}
+
+	// 채팅방에 새로운 client count --
+	public void clientOut(Long roomNo) {
+		Room room = roomRepo.getById(roomNo);
+		room.exitClient();
+		roomRepo.save(room);
+	}
+
 }
