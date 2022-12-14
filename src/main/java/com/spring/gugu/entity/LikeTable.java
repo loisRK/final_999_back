@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.gugu.dto.LikeTableDTO;
 
 import lombok.AllArgsConstructor;
@@ -32,13 +34,21 @@ public class LikeTable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "like_no")
 	private Long likeNo;
+
+//	@Column(name = "user_id")
+//	private Long userId;
+	
+//	@Column(name = "post_no")
+//	private Long postNo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_no")
+	@JsonIgnore
 	private Post post;
 	
 	@Column(name = "after_like")
@@ -47,12 +57,18 @@ public class LikeTable {
 	public static LikeTableDTO entityToDTO(LikeTable likeTable) {
 		LikeTableDTO likeTableDTO = LikeTableDTO.builder()
 								.likeNo(likeTable.getLikeNo())
+//								.userId(likeTable.getUserId())
+//								.postNo(likeTable.getPostNo())
 								.userDTO(User.entityToDTO(likeTable.getUser()))
-								.postDTO(Post.entityToDTO(likeTable.getPost()))
+//								.postDTO(Post.entityToDTO(likeTable.getPost()))
 								.afterlike(likeTable.getAfterLike())
 								.build();
 		return likeTableDTO;
 								
+	}
+	
+	public void updateLike(int changeLike) {
+		this.afterLike = changeLike;
 	}
 
 }
