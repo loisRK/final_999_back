@@ -103,6 +103,7 @@ public class PostServiceImpl implements PostService {
 
    public void deletePost(Long postNo) {
 	      postRepo.deleteById(postNo);
+	     
 	   }
 	   
    public Post getById(Long postNo) {
