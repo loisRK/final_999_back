@@ -57,7 +57,8 @@ public class PostServiceImpl implements PostService {
 		System.out.println("inside service");
 		Pageable pageable = requestDTO.getPageable();
 		// Post타입의 Page 객체 생성
-		Page<Post> result = postRepo.findAll(pageable);
+		Page<Post> result = postRepo.findAll(pageable); // null 일 때
+//		Page<Post> result = postRepo.findById(pageable, kakaoId); // null 아닐 때
 		System.out.println("######### Page<Post> : " + result);
 		// Post 타입을 PostDTO 타입으로 변경해 저장하는 function 정의
 		Function<Post, PostLikeDTO> fn = (post -> PostLikeDTO.fromEntities(post, getLoginLikes(post, loginId)));
