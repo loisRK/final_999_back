@@ -94,7 +94,10 @@ public class RoomController {
 //		System.out.println(reportDTO);
 		
 		reportService.insertReport(reportDTO);
-	
 	}
 
+	@GetMapping("/reportNum")
+	public int insertReport(@RequestParam("roomNo") Long roomNo, @RequestParam("reportedId") Long reportedId) {
+		return reportService.getReportNum(roomNo, reportedId);
+	}
 }
