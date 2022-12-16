@@ -62,9 +62,10 @@ public class PostController {
 		Long kakaoId = (Long) request.getAttribute("userCode");
 		System.out.println("kakao ID : " + kakaoId);
 		UserDTO userDTO = userService.getUser(request);
-
+		
 		String fileName = null;
 		
+//		System.out.println("file 유무 확인 : "+fileName);
 		try {
 			if (file != null && file.getSize() != 0) {
 				// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
@@ -76,19 +77,23 @@ public class PostController {
 			e.printStackTrace();
 		}
 		
-		Post post = Post.builder()
-				.user(UserDTO.dtoToEntity(userDTO))
-				.postLat(Double.parseDouble(postLat))
-				.postLong(Double.parseDouble(postLong))
-				.postContent(content)
-				.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
-				.postImg(fileName)
-				.build();
 		
-
-		postNo = postService.save(post);
-		System.out.println("post 저장 완료(postNo) : " + postNo);
-
+		System.out.println("####"+content+"####");
+		// 포스팅
+		if(content != null && content != " ") {
+			Post post = Post.builder()
+					.user(UserDTO.dtoToEntity(userDTO))
+					.postLat(Double.parseDouble(postLat))
+					.postLong(Double.parseDouble(postLong))
+					.postContent(content)
+					.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
+					.postImg(fileName)
+					.build();
+			
+	        postNo = postService.save(post);
+	        System.out.println("post 저장 완료(postNo) : " + postNo);
+	    }
+		
 		return postNo;
 	}
 
@@ -162,8 +167,14 @@ public class PostController {
 	@DeleteMapping("/postDelete")
 	public void deleteDiary(@RequestParam("postNo") Long postNo) {
 
-//		System.out.println("deleteTEST#############"+postService.getById(postNo).getPostImg());
-//		s3Uploader.deleteFile(postService.getById(postNo).getPostImg());
+		String postImgLink = postService.getById(postNo).getPostImg();
+		
+		// s3 delete code 실행 안됨
+//		if(postImgLink != null && postImgLink != "") {
+//			System.out.println("deleteTEST#############"+postService.getById(postNo).getPostImg());
+//			s3Uploader.deleteFile(postService.getById(postNo).getPostImg());
+//		}
+//		
 		System.out.println("postNo : "+postNo);
 		postService.deletePost(postNo);
 	}
