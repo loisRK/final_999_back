@@ -80,8 +80,9 @@ public class RoomController {
 	
 	// 맘에들지 않는 둘기 신고하기
 	@PostMapping("/report")
-	public void insertReport(@RequestParam("roomNo") long roomNo, @RequestParam("message") String message, @RequestParam("reporterId") long reporterId, @RequestParam("reportedId") long reportedId) {
+	public int insertReport(@RequestParam("roomNo") long roomNo, @RequestParam("message") String message, @RequestParam("reporterId") long reporterId, @RequestParam("reportedId") long reportedId) {
 		
+		System.out.println("######## /report : " + roomNo + " " + message + " " + reporterId + " " + reportedId);
 		// DTO 객체 생성.
 		ReportDTO reportDTO = ReportDTO.builder()
 				 					   .roomNo(roomNo)
@@ -91,10 +92,30 @@ public class RoomController {
 				 					   .build();
 		
 		//잘 가져와 지는 것을 확인 !
-//		System.out.println(reportDTO);
+		System.out.println("reportDTO : " + reportDTO);
 		
-		reportService.insertReport(reportDTO);
-	
+		int reportNum = reportService.insertReport(reportDTO);
+		System.out.println("###### reportNum : " + reportNum);
+		
+		return reportNum;
 	}
+
+
+	
+	@GetMapping("/deleteRoom/{roomNo}")
+	public void deleteRoom(@PathVariable Long roomNo) {
+		
+	}
+	
+
+//	@GetMapping("/reportNum")
+//	public int insertReport(@RequestParam("roomNo") Long roomNo, @RequestParam("reportedId") Long reportedId) {
+//		System.out.println("############# roomNo and reportedId : " + roomNo + " " + reportedId);
+//		int reportNum = reportService.getReportNum(roomNo, reportedId);
+//		
+//		System.out.println("###### reportNum : " + reportNum);
+//		
+//		return reportNum;
+//	}
 
 }
