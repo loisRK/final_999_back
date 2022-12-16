@@ -15,7 +15,8 @@ import com.spring.gugu.entity.User;
 public interface PostService {
 	
 	public PageResultDTO<PostDTO, Post> getList(PageRequestDTO requestDTO);
-	public PageResultDTO<PostLikeDTO, Post> getPostLike(PageRequestDTO requestDTO, Long loginId);
+//	public PageResultDTO<PostLikeDTO, Post> getPostLike(PageRequestDTO requestDTO, Long loginId);
+	public PageResultDTO<PostLikeDTO, Post> getPostLike(PageRequestDTO requestDTO, Long loginId, String nickname);
 
 	public Long save(Post post);
 	
