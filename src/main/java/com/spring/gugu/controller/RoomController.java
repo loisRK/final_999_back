@@ -100,4 +100,11 @@ public class RoomController {
 	public int insertReport(@RequestParam("roomNo") Long roomNo, @RequestParam("reportedId") Long reportedId) {
 		return reportService.getReportNum(roomNo, reportedId);
 	}
+	
+	
+	@GetMapping("/deleteRoom/{roomNo}")
+	public void deleteRoom(@PathVariable Long roomNo) {
+		
+	}
+	
 }
