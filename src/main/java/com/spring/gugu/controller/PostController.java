@@ -115,16 +115,19 @@ public class PostController {
 		return pageResultDTO2;
 	}
 
+	// 검색 기능 추가
 	@GetMapping("/postLikePage")
-	public PageResultDTO getPostLike(@RequestParam("page") int pageNo, @RequestParam("size") int size,
-			@RequestParam("loginId") Long loginId) {
-
+	public PageResultDTO getPostLike(@RequestParam("page") int pageNo, @RequestParam("size") int size, 
+			@RequestParam("loginId") Long loginId, @RequestParam("searchId") String searchNickname) {
+		
+		System.out.println("######################searchId" + searchNickname);
+		
 		// pagination을 위한 pageable 객체 생성
 		PageRequestDTO requestDTO2 = PageRequestDTO.builder().page(pageNo).size(size).build();
 
 		// pageable 객체에 넣은 post 전체 데이터
-		PageResultDTO pageResultDTO2 = postService.getPostLike(requestDTO2, loginId);
-		System.out.println("pageREsult:" + pageResultDTO2);
+		PageResultDTO pageResultDTO2 = postService.getPostLike(requestDTO2, loginId, searchNickname);
+		System.out.println("pageREsult:"+pageResultDTO2);
 
 		return pageResultDTO2;
 	}
