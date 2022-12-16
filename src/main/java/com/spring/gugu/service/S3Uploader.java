@@ -82,10 +82,10 @@ public class S3Uploader {
         return Optional.empty();
     }
     
-//    public void deleteFile(String fileLink) {
-//    	String[] fileLinkSplit = fileLink.split("/gugu-post/");
-//    	System.out.println("fileLink 분리#####"+fileLinkSplit);
-////    	String filePath = 
-////    	amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, "/gugu-post/"+fileLinkSplit[1]));
-//    }
+    public void deleteFile(String fileLink) {
+    	System.out.println("############"+fileLink);
+    	String[] fileLinkSplit = fileLink.split("/gugu-s3/");
+    	System.out.println("fileLink 분리#####"+fileLinkSplit[1]);
+    	amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, "gugu-s3/"+fileLinkSplit[1]));
+    }
 }

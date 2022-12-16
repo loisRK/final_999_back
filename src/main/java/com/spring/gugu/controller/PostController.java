@@ -65,7 +65,17 @@ public class PostController {
 		
 		String fileName = null;
 		
-		System.out.println("file 유무 확인 : "+fileName);
+//		System.out.println("file 유무 확인 : "+fileName);
+		try {
+			if(file != null && file.getSize() != 0) {
+				fileName = s3Uploader.uploadFiles(file, "gugu-s3");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		System.out.println("####"+content+"####");
 		// 포스팅
 		if(content != null && content != " ") {
@@ -155,8 +165,14 @@ public class PostController {
 	@DeleteMapping("/postDelete")
 	public void deleteDiary(@RequestParam("postNo") Long postNo) {
 
-//		System.out.println("deleteTEST#############"+postService.getById(postNo).getPostImg());
-//		s3Uploader.deleteFile(postService.getById(postNo).getPostImg());
+		String postImgLink = postService.getById(postNo).getPostImg();
+		
+		// s3 delete code 실행 안됨
+//		if(postImgLink != null && postImgLink != "") {
+//			System.out.println("deleteTEST#############"+postService.getById(postNo).getPostImg());
+//			s3Uploader.deleteFile(postService.getById(postNo).getPostImg());
+//		}
+//		
 		System.out.println("postNo : "+postNo);
 		postService.deletePost(postNo);
 	}
