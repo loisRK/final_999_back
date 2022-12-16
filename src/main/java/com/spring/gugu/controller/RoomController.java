@@ -100,6 +100,14 @@ public class RoomController {
 		return reportNum;
 	}
 
+
+	
+	@GetMapping("/deleteRoom/{roomNo}")
+	public void deleteRoom(@PathVariable Long roomNo) {
+		
+	}
+	
+
 //	@GetMapping("/reportNum")
 //	public int insertReport(@RequestParam("roomNo") Long roomNo, @RequestParam("reportedId") Long reportedId) {
 //		System.out.println("############# roomNo and reportedId : " + roomNo + " " + reportedId);
@@ -109,4 +117,5 @@ public class RoomController {
 //		
 //		return reportNum;
 //	}
+
 }

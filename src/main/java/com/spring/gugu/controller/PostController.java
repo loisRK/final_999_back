@@ -52,7 +52,7 @@ public class PostController {
 						@RequestParam("postLat") String postLat,
 						@RequestParam("postLong") String postLong,
 //						@RequestParam(name="files", required = false) List<MultipartFile> files,
-						@RequestParam(name="files", required = false) MultipartFile file,
+						@RequestParam(name = "files", required = false) MultipartFile file,
 						HttpServletRequest request) {
 		
 
@@ -62,22 +62,26 @@ public class PostController {
 		Long kakaoId = (Long) request.getAttribute("userCode");
 		System.out.println("kakao ID : " + kakaoId);
 		UserDTO userDTO = userService.getUser(request);
+
 		
 		String fileName = null;
 		
 //		System.out.println("file 유무 확인 : "+fileName);
 		try {
 			if (file != null && file.getSize() != 0) {
+
 				// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
 				fileName = s3Uploader.uploadFiles(file, "gugu-post");
 				System.out.println("s3 file url : "+fileName);
 			}
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
+
+
 		System.out.println("####"+content+"####");
 		// 포스팅
 		if(content != null && content != " ") {
@@ -93,7 +97,7 @@ public class PostController {
 	        postNo = postService.save(post);
 	        System.out.println("post 저장 완료(postNo) : " + postNo);
 	    }
-		
+
 		return postNo;
 	}
 
