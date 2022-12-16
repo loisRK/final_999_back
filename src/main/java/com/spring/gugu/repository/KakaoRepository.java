@@ -18,4 +18,7 @@ public interface KakaoRepository extends JpaRepository<User, Long>{
 
 	// kakaoId로 user data 불러오기
 	public User findByKakaoId(Long kakaoId);
+	
+	// nickame으로 user data 불러오기
+	public User findBykakaoNicknameContaining(String nickname);
 }
