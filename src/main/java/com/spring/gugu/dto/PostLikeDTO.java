@@ -26,6 +26,7 @@ public class PostLikeDTO {
 	private String postContent;
 	private Long likeCnt;
 	private String postImg;
+	private Long kakaoId;
 	private String kakaoNickname;
 	private String kakaoProfileImg;
 	private int afterLike;
@@ -37,6 +38,7 @@ public class PostLikeDTO {
 											 .postContent(post.getPostContent())
 											 .likeCnt(post.getLikeCnt())
 											 .postImg(post.getPostImg())
+											 .kakaoId(post.getUser().getKakaoId())
 											 .kakaoNickname(post.getUser().getKakaoNickname())
 											 .kakaoProfileImg(post.getUser().getKakaoProfileImg())
 											 .afterLike(afterLike)

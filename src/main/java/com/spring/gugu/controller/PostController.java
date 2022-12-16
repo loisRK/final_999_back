@@ -33,13 +33,13 @@ import com.spring.gugu.service.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController		// 페이지 전환이 필요없으므로 restController 사용
+@RestController // 페이지 전환이 필요없으므로 restController 사용
 @RequestMapping(value = "/api")
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = { "http://localhost:3000" })
 @DynamicUpdate
 @RequiredArgsConstructor
 public class PostController {
-	
+
 	final PostServiceImpl postService;
 	final KakaoServiceImpl userService;
 	final FileServiceImpl fileService;
@@ -55,26 +55,15 @@ public class PostController {
 						@RequestParam(name="files", required = false) MultipartFile file,
 						HttpServletRequest request) {
 		
+
 		Long postNo = null;
-		
-		// localStroage의 user_id로  user 정보 get 
-		Long kakaoId = (Long)request.getAttribute("userCode");
+
+		// localStroage의 user_id로 user 정보 get
+		Long kakaoId = (Long) request.getAttribute("userCode");
 		System.out.println("kakao ID : " + kakaoId);
 		UserDTO userDTO = userService.getUser(request);
 		
 		String fileName = null;
-		try {
-			if(file != null && file.getSize()!=0) {
-//		System.out.println("file 사이즈 확인 : "+file.getSize());
-			// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
-				fileName = s3Uploader.uploadFiles(file, "gugu-post");
-				System.out.println("s3 file url : "+fileName);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		
 		System.out.println("file 유무 확인 : "+fileName);
 		System.out.println("####"+content+"####");
@@ -95,42 +84,36 @@ public class PostController {
 		
 		return postNo;
 	}
-	
+
 	// 모든 포스트 불러오기
 	@GetMapping("/postPage")
 	public PageResultDTO postPage(@RequestParam("page") int pageNo, @RequestParam("size") int size) {
-		
+
 		// pagination을 위한 pageable 객체 생성
-		PageRequestDTO requestDTO2 = PageRequestDTO.builder()
-				.page(pageNo)
-				.size(size)
-				.build();
-		
+		PageRequestDTO requestDTO2 = PageRequestDTO.builder().page(pageNo).size(size).build();
+
 		// pageable 객체에 넣은 post 전체 데이터
 		PageResultDTO pageResultDTO2 = postService.getList(requestDTO2);
-		System.out.println("pageREsult:"+pageResultDTO2);
-		
+		System.out.println("pageREsult:" + pageResultDTO2);
+
 		return pageResultDTO2;
 	}
-	
+
 	@GetMapping("/postLikePage")
-	public PageResultDTO getPostLike(@RequestParam("page") int pageNo, @RequestParam("size") int size, @RequestParam("loginId") Long loginId) {
-		
+	public PageResultDTO getPostLike(@RequestParam("page") int pageNo, @RequestParam("size") int size,
+			@RequestParam("loginId") Long loginId) {
+
 		// pagination을 위한 pageable 객체 생성
-		PageRequestDTO requestDTO2 = PageRequestDTO.builder()
-				.page(pageNo)
-				.size(size)
-				.build();
-		
+		PageRequestDTO requestDTO2 = PageRequestDTO.builder().page(pageNo).size(size).build();
+
 		// pageable 객체에 넣은 post 전체 데이터
 		PageResultDTO pageResultDTO2 = postService.getPostLike(requestDTO2, loginId);
-		System.out.println("pageREsult:"+pageResultDTO2);
-		
+		System.out.println("pageREsult:" + pageResultDTO2);
+
 		return pageResultDTO2;
 	}
-	
-	
-	// 포스트 내용 불러오기 
+
+	// 포스트 내용 불러오기
 	@GetMapping("/post/{postNo}")
 	public PostDTO getPost(@PathVariable Long postNo) {
 		System.out.println("포스트 내용 불러오기");
@@ -138,17 +121,17 @@ public class PostController {
 		postDTO = postService.getPostByNo(postNo);
 		return postDTO;
 	}
-	
-	// 포스트 내용 수정하기 
+
+	// 포스트 내용 수정하기
 	@PutMapping("/updatePost/{postNo}")
 	public void updatePost(@PathVariable("postNo") Long postNo,
 			@RequestParam("content") String content,
 			@RequestParam(name = "files", required = false) MultipartFile files) {
-		
+
 		System.out.println("#################포스트 수정");
 		System.out.println(files);
-		
-		if(files == null) {
+
+		if (files == null) {
 			postService.postDTOUpdate(postNo, content, "");
 		}
 		
@@ -161,43 +144,43 @@ public class PostController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
 		
 		postService.postDTOUpdate(postNo, content, fileName);
 		
 	}
-	
 
 	// 포스트 제거하기
 	@DeleteMapping("/postDelete")
 	public void deleteDiary(@RequestParam("postNo") Long postNo) {
+
 //		System.out.println("deleteTEST#############"+postService.getById(postNo).getPostImg());
 //		s3Uploader.deleteFile(postService.getById(postNo).getPostImg());
 		System.out.println("postNo : "+postNo);
 		postService.deletePost(postNo);
 	}
 
-	
+
 	// 좋아요 누르기 - 근영
 	@PostMapping("/addLikeCnt")
-	public Long addLikeCnt(
-			@RequestParam("postNo") String postNo, 
-			@RequestParam("userId") String userId,
+	public Long addLikeCnt(@RequestParam("postNo") String postNo, @RequestParam("userId") String userId,
 			@RequestParam("afterLike") int afterLike) {
 		System.out.println("---");
-		System.out.println("##################### " + postNo + " " +  userId + " " + afterLike);
+		System.out.println("##################### " + postNo + " " + userId + " " + afterLike);
 		Long likeCnt = postService.addLikeCnt(Long.parseLong(postNo), Long.parseLong(userId), afterLike);
 		System.out.println("######## LIKECNT : " + afterLike + " " + likeCnt);
-		
+
 		return likeCnt;
 	}
-	
+
 	// 해당 유저의 좋아요 정보 가져오기
 	@GetMapping("/getLike")
 	public Long getLike(@RequestParam("postNo") Long postNo, @RequestParam("userId") Long userId) {
 		System.out.println("################# " + postNo + userId);
 		return postService.getLike(postNo, userId);
 	}
+
 
     // 모든 포스트 불러오기 
     @GetMapping("/postList")
@@ -226,6 +209,4 @@ public class PostController {
   		  @RequestParam("roomNo") String roomNo) {
 	  
     }
-    
-    
 }
