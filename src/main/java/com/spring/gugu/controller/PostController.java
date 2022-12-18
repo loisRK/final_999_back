@@ -55,28 +55,21 @@ public class PostController {
 						@RequestParam(name = "files", required = false) MultipartFile file,
 						HttpServletRequest request) {
 		
-
 		Long postNo = null;
+		String fileName = "";
 
 		// localStroage의 user_id로 user 정보 get
-		Long kakaoId = (Long) request.getAttribute("userCode");
-		System.out.println("kakao ID : " + kakaoId);
 		UserDTO userDTO = userService.getUser(request);
 		
-		String fileName = null;
-		
-//		System.out.println("file 유무 확인 : "+fileName);
-		try {
-			if (file != null && file.getSize() != 0) {
 
-			// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
-			fileName = s3Uploader.uploadFiles(file, "gugu-post");
-			System.out.println("s3 file url : "+fileName);
+		if (file != null && file.getSize() != 0) {
+			try {
+				// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
+				fileName = s3Uploader.uploadFiles(file, "gugu-post");
+				System.out.println("s3 file url : "+fileName);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 
@@ -95,6 +88,18 @@ public class PostController {
 	        postNo = postService.save(post);
 	        System.out.println("post 저장 완료(postNo) : " + postNo);
 	    }
+		// post 객체 생성
+		Post post = Post.builder()
+				.user(UserDTO.dtoToEntity(userDTO))
+				.postLat(Double.parseDouble(postLat))
+				.postLong(Double.parseDouble(postLong))
+				.postContent(content)
+				.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
+				.postImg(fileName)
+				.build();
+		
+        postNo = postService.save(post);
+        System.out.println("post 저장 완료(postNo) : " + postNo);
 
 
 		return postNo;
@@ -144,32 +149,27 @@ public class PostController {
 	@PutMapping("/updatePost/{postNo}")
 	public void updatePost(@PathVariable("postNo") Long postNo,
 			@RequestParam("content") String content,
-			@RequestParam(name = "files", required = false) MultipartFile files) {
+			@RequestParam(name = "files", required = false) MultipartFile file) {
 
 		System.out.println("#################포스트 수정");
-		System.out.println(files);
 
-
-		if (files == null) {
-			postService.postDTOUpdate(postNo, content, "");
-		}
-		
 		String fileName = "";
 		
-		try {
-			// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
-			fileName = s3Uploader.uploadFiles(files, "gugu-post");
-			System.out.println("s3 file url : "+fileName);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
+		if (file != null && file.getSize() != 0) {
+			try {
+					// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
+					fileName = s3Uploader.uploadFiles(file, "gugu-post");
+					System.out.println("s3 file url : "+fileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}		
 		}
 		
 		postService.postDTOUpdate(postNo, content, fileName);
 		
 	}
 
+	
 	// 포스트 제거하기
 	@DeleteMapping("/postDelete")
 	public void deleteDiary(@RequestParam("postNo") Long postNo) {
