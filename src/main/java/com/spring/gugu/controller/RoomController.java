@@ -105,6 +105,7 @@ public class RoomController {
 	@GetMapping("/deleteRoom/{roomNo}")
 	public void deleteRoom(@PathVariable Long roomNo) {
 		
+		roomService.deleteRoom(roomNo);
 	}
 	
 
