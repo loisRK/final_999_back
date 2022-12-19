@@ -17,14 +17,15 @@ public interface KakaoService {
 	public KakaoProfile findProfile(String token);
 
 	public String SaveUserAndGetToken(String access_token);
-
 	
-	public ResponseEntity<String> logout(HttpServletRequest request);
+//	public ResponseEntity<String> logout(HttpServletRequest request);
+	public ResponseEntity<String> logout2(HttpServletRequest request);
 
 //	public User getUserById(Long userId);
 
 	public UserDTO getUser(HttpServletRequest request);
 
 	public User getUserById(Long kakaoId);
+
 
 }
