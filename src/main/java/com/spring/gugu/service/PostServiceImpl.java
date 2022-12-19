@@ -120,11 +120,7 @@ public class PostServiceImpl implements PostService {
    @Transactional
    public void postDTOUpdate(Long postNo, String content, String postImg) throws NoSuchElementException{
       Post post = postRepo.findById(postNo).orElseThrow(NoSuchElementException::new);
-      if(postImg == "") {
-    	  post.updatePost(content);
-      } else {
-    	  post.updatePost(content, postImg);
-      }
+      post.updatePost(content, postImg);
       System.out.println("#####################  변경 된 내용 : " + post.getPostContent());
    }
 

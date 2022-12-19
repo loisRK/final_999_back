@@ -142,9 +142,10 @@ public class KakaoServiceImpl implements KakaoService {
 	 */
 	@Override
 	public String SaveUserAndGetToken(String token) {
+		
 		KakaoProfile profile = findProfile(token);
 		
-		User user = kakaoRepo.findByKakaoEmail(profile.getKakao_account().getEmail());
+		User user = kakaoRepo.findByKakaoId(profile.getId());
 		if(user == null) {
 			user = User.builder()
 							  .kakaoId(profile.getId())
