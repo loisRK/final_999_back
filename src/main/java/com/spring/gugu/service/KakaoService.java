@@ -26,6 +26,8 @@ public interface KakaoService {
 	public UserDTO getUser(HttpServletRequest request);
 
 	public User getUserById(Long kakaoId);
+	
+	public void userUpdate(Long userId, String email, String nickname, String fileName);
 
 
 }

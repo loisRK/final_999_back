@@ -89,6 +89,16 @@ public class User {
 								.postCnt(user.getPostCnt())
 								.build();
 		return userDTO;
+		
+	}
+	public void updateUser(String kakaoEmail, String kakaoNickname, String kakaoProfileImg) {
+		this.kakaoEmail = kakaoEmail;
+		this.kakaoNickname = kakaoNickname;
+		this.kakaoProfileImg = kakaoProfileImg;
+	}
+	public void updateUser(String kakaoEmail, String kakaoNickname) {
+		this.kakaoEmail = kakaoEmail;
+		this.kakaoNickname = kakaoNickname;
 	}
 
 }

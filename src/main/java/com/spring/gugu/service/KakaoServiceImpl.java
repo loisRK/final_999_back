@@ -137,13 +137,10 @@ public class KakaoServiceImpl implements KakaoService {
 	 */
 	@Override
 	public String SaveUserAndGetToken(String token) {
+		
 		KakaoProfile profile = findProfile(token);
 		
-		System.out.println("######## profile : " + profile.toString());
-		System.out.println("######## kakaoEmail : " + profile.getKakao_account().getEmail());
-//		User user = kakaoRepo.findByKakaoEmail(profile.getKakao_account().getEmail());
 		User user = kakaoRepo.findByKakaoId(profile.getId());
-		System.out.println("######## user : " + user);
 		
 		if(user == null) {		// 첫 로그인 시 회원가입이 안되어 있을 때
 			user = User.builder()
@@ -351,5 +348,21 @@ public class KakaoServiceImpl implements KakaoService {
 		System.out.println("###### logout2 : " + kakaoLogoutResponse);
 		
 		return kakaoLogoutResponse;
+	}
+
+
+	@Override
+	@Transactional
+	public void userUpdate(Long userId, String email, String nickname, String fileName) {
+		User user = kakaoRepo.findByKakaoId(userId);
+		
+		if(fileName=="") {
+			user.updateUser(email, nickname);
+		} else {
+			user.updateUser(email, nickname, fileName);
+		}
+		
+		System.out.println("변경완료!!" + user.getKakaoNickname());
+		
 	}
 }
