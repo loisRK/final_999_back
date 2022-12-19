@@ -1,5 +1,6 @@
 package com.spring.gugu.service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.spring.gugu.common.dto.PageRequestDTO;
 import com.spring.gugu.common.dto.PageResultDTO;
-import com.spring.gugu.dto.LikeTableDTO;
 import com.spring.gugu.dto.PostDTO;
 import com.spring.gugu.dto.PostLikeDTO;
 import com.spring.gugu.entity.LikeTable;
@@ -80,9 +80,9 @@ public class PostServiceImpl implements PostService {
 			result = postRepo.findAll(pageable);
 			
 		} else {
-			User user = userRepo.findBykakaoNicknameContaining(nickname);
-			System.out.println("*****************user" + user);
-			result = postRepo.findByUser(user, pageable);
+			List<User> users = userRepo.findAllBykakaoNicknameContaining(nickname);
+			System.out.println("*****************user" + users);
+			result = postRepo.findAllByUser(users, pageable);
 		}
 		
 		System.out.println("######### Page<Post> : " + result);
