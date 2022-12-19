@@ -1,21 +1,28 @@
 package com.spring.gugu.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.gugu.config.jwt.JwtProperties;
 import com.spring.gugu.dto.UserDTO;
 import com.spring.gugu.entity.User;
 import com.spring.gugu.model.OauthToken;
 import com.spring.gugu.service.KakaoServiceImpl;
+import com.spring.gugu.service.S3Uploader;
 
 @RestController		// 메소드 리턴타입 객체를 json으로 자동 파싱 해준다. 이동이 아니라 값만 받는 용
 @RequestMapping(value = "/api")
@@ -24,6 +31,8 @@ public class KakaoController {
 	
 	@Autowired
 	private KakaoServiceImpl kakaoService;
+	@Autowired
+	private S3Uploader s3Uploader;
 	
 	// 프론트에서 인가코드 받아오는 URL
 	@GetMapping("/oauth/token")
@@ -73,11 +82,36 @@ public class KakaoController {
     @GetMapping("/kakaoLogout")
     public ResponseEntity<String> getLogout(HttpServletRequest request) {
 		
-    	ResponseEntity<String> response = kakaoService.logout(request);
+    	ResponseEntity<String> response = kakaoService.logout2(request);
+//    	ResponseEntity<String> response = kakaoService.logout(request);
     	
     	System.out.println("######### RESPONSE : " + response);
-    	// #################################### cookie 지우기 코드 추가하기!!!!! #######################################
     	
 		return ResponseEntity.ok().body("success");
+    }
+    
+    // 프로필 수정 
+    @PutMapping("/updateUser/{userId}")
+    public void updateUser(@PathVariable("userId") Long userId,
+    						@RequestParam("email") String email,
+    						@RequestParam("nickname") String nickname,
+    						@RequestParam(name = "files", required = false) MultipartFile file) {
+    	
+    	System.out.println("############프로필 업데이트");
+    	String fileName= "";
+    	
+    	if (file != null && file.getSize() != 0) {
+			try {
+					// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
+					fileName = s3Uploader.uploadFiles(file, "gugu-post");
+					System.out.println("s3 file url : "+fileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}		
+		}
+    	
+    	kakaoService.userUpdate(userId, email, nickname, fileName);
+    	
+    	
     }
 }

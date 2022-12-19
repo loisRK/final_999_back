@@ -60,6 +60,7 @@ public class PostController {
 
 		// localStroage의 user_id로 user 정보 get
 		UserDTO userDTO = userService.getUser(request);
+		System.out.println("######### insertDiary userDTO : " + userDTO.toString());
 		
 		if (file != null && file.getSize() != 0) {
 			try {
