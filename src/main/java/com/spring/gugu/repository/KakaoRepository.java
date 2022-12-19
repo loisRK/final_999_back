@@ -1,5 +1,7 @@
 package com.spring.gugu.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +22,5 @@ public interface KakaoRepository extends JpaRepository<User, Long>{
 	public User findByKakaoId(Long kakaoId);
 	
 	// nickame으로 user data 불러오기
-	public User findBykakaoNicknameContaining(String nickname);
+	public List<User> findAllBykakaoNicknameContaining(String nickname);
 }
