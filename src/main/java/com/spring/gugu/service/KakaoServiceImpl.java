@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
