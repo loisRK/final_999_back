@@ -243,4 +243,20 @@ public class KakaoServiceImpl implements KakaoService {
 		
 		return kakaoLogoutResponse;
 	}
+
+
+	@Override
+	@Transactional
+	public void userUpdate(Long userId, String email, String nickname, String fileName) {
+		User user = kakaoRepo.findByKakaoId(userId);
+		
+		if(fileName=="") {
+			user.updateUser(email, nickname);
+		} else {
+			user.updateUser(email, nickname, fileName);
+		}
+		
+		System.out.println("변경완료!!" + user.getKakaoNickname());
+		
+	}
 }
