@@ -1,7 +1,10 @@
 package com.spring.gugu.service;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import com.spring.gugu.service.S3Uploader;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -36,6 +41,9 @@ public class KakaoServiceImpl implements KakaoService {
 	
 	@Autowired
 	KakaoRepository kakaoRepo;
+	
+	@Autowired
+	S3Uploader s3Uploader;
 	
     //환경 변수 가져오기
 	@Value("${kakao.clientId}")
@@ -61,7 +69,8 @@ public class KakaoServiceImpl implements KakaoService {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", client_id);
-		params.add("redirect_uri", "http://localhost:3000/oauth/callback/kakao");
+		params.add("redirect_uri", "http://localhost:3000/checkMember");
+//		params.add("redirect_uri", "http://localhost:3000/oauth/callback/kakao");
 		params.add("code", code);
 //		params.add("client_secret", "{시크릿 키}");		// 생략 가능!
 		
@@ -130,33 +139,102 @@ public class KakaoServiceImpl implements KakaoService {
 		return kakaoProfile;
 	}
 	
-	
+	// 우리 DB에 등록되어 있는 사용자인지 확인
+	@Override
+	public ArrayList<User> checkMember(String token) {		// token = 액세스 토큰
+		// 카카오 서버에게 사용자 정보 요청
+		KakaoProfile profile = findProfile(token);
+		
+		// 우리 DB에서 카카오아이디로 유저 검색
+		User userDB = kakaoRepo.findByKakaoId(profile.getId());
+		
+		// 동의서로 만든 임시 유저 정보
+		User userBuild = User.builder()
+				  .kakaoId(profile.getId())
+				  .kakaoNickname(profile.getKakao_account().getProfile().getNickname())
+				  .kakaoProfileImg(profile.getKakao_account().getProfile().getProfile_image_url())
+				  .kakaoEmail(profile.getKakao_account().getEmail())
+				  .ageRange(profile.getKakao_account().getAge_range())
+				  .gender(profile.getKakao_account().getGender())
+				  .build();
+		
+		ArrayList<User> users = new ArrayList<User>();
+		users.add(userDB);
+		users.add(userBuild);
+		
+		return users;
+	}
+
 	/* 
 	 * kakao server에서 승인받은 토큰을 이용해 
 	 * 사용자의 kakao profile data를 불러와 
 	 * UserEntity에 저장 하는 메소드
 	 */
 	@Override
-	public String SaveUserAndGetToken(String token) {
+	public String SignupAndGetToken(String token, String nickname, String gender, String age, List<MultipartFile> files) {	// token = 액세스토큰
 		
+		// 카카오 서버에게 사용자 정보 요청
 		KakaoProfile profile = findProfile(token);
 		
-		User user = kakaoRepo.findByKakaoId(profile.getId());
+		String fileName = "";
 		
-		if(user == null) {		// 첫 로그인 시 회원가입이 안되어 있을 때
-			user = User.builder()
-							  .kakaoId(profile.getId())
-							  .kakaoNickname(profile.getKakao_account().getProfile().getNickname())
-							  .kakaoProfileImg(profile.getKakao_account().getProfile().getProfile_image_url())
-							  .kakaoEmail(profile.getKakao_account().getEmail())
-							  .ageRange(profile.getKakao_account().getAge_range())
-							  .gender(profile.getKakao_account().getGender())
-							  .build();
-			
-			kakaoRepo.save(user);
+		if (files != null) {
+			for(MultipartFile file : files) {
+				try {
+					// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
+					fileName = s3Uploader.uploadFiles(file, "gugu-post");
+					System.out.println("s3 file url : " + fileName);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		
+		User user = User.builder()
+						  .kakaoId(profile.getId())
+						  .kakaoNickname(nickname)
+						  .kakaoProfileImg(fileName)
+						  .kakaoEmail(profile.getKakao_account().getEmail())
+						  .ageRange(age)
+						  .gender(gender)
+						  .build();
+		
+		kakaoRepo.save(user);
+		
 		return createToken(user, token);
 	}
+//	@Override
+//	public ArrayList<String> SaveUserAndGetToken(User user, String token) {	// token = 액세스토큰
+//		
+//		String userExist = "no";
+//		
+//		// 카카오 서버에게 사용자 정보 요청
+//		KakaoProfile profile = findProfile(token);
+//		
+//		// 우리 DB에서 카카오아이디로 유저 검색
+//		User user = kakaoRepo.findByKakaoId(profile.getId());
+//		
+//		if(user == null) {		// 첫 로그인 시 회원가입이 안되어 있을 때
+//			user = User.builder()
+//							  .kakaoId(profile.getId())
+//							  .kakaoNickname(profile.getKakao_account().getProfile().getNickname())
+//							  .kakaoProfileImg(profile.getKakao_account().getProfile().getProfile_image_url())
+//							  .kakaoEmail(profile.getKakao_account().getEmail())
+//							  .ageRange(profile.getKakao_account().getAge_range())
+//							  .gender(profile.getKakao_account().getGender())
+//							  .build();
+//			
+//			kakaoRepo.save(user);
+//		} else {
+//			userExist = "yes";
+//		}
+//		
+//		ArrayList<String> returnVal = new ArrayList<String>();
+//		returnVal.add(userExist);
+//		returnVal.add(createToken(user, token));
+//		
+//		return returnVal;
+//	}
 	
 	
 	/* 
