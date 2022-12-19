@@ -102,6 +102,7 @@ public class KakaoController {
 		System.out.println("##### HERE :  " + ResponseEntity.ok().headers(headers).body("success"));
 		return ResponseEntity.ok().headers(headers).body("success");
 	}
+	
 //	// 프론트에서 인가코드 받아오는 URL
 //	@GetMapping("/oauth/token")
 //	public ResponseEntity<String> getLogin(@RequestParam("code") String code) {	// code = 인가코드
