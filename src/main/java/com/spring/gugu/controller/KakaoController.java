@@ -82,10 +82,10 @@ public class KakaoController {
     @GetMapping("/kakaoLogout")
     public ResponseEntity<String> getLogout(HttpServletRequest request) {
 		
-    	ResponseEntity<String> response = kakaoService.logout(request);
+    	ResponseEntity<String> response = kakaoService.logout2(request);
+//    	ResponseEntity<String> response = kakaoService.logout(request);
     	
     	System.out.println("######### RESPONSE : " + response);
-    	// #################################### cookie 지우기 코드 추가하기!!!!! #######################################
     	
 		return ResponseEntity.ok().body("success");
     }
