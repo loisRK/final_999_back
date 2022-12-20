@@ -62,6 +62,7 @@ public class PostController {
 		UserDTO userDTO = userService.getUser(request);
 		System.out.println("######### insertDiary userDTO : " + userDTO.toString());
 		
+
 		if (file != null && file.getSize() != 0) {
 			try {
 				// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
@@ -72,18 +73,35 @@ public class PostController {
 			}
 		}
 		
-		// post 객체 생성
-		Post post = Post.builder()
-				.user(UserDTO.dtoToEntity(userDTO))
-				.postLat(Double.parseDouble(postLat))
-				.postLong(Double.parseDouble(postLong))
-				.postContent(content)
-				.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
-				.postImg(fileName)
-				.build();
+
+		System.out.println("####"+content+"####");
+		// 포스팅
+		if(content != null && content != "") {
+			Post post = Post.builder()
+					.user(UserDTO.dtoToEntity(userDTO))
+					.postLat(Double.parseDouble(postLat))
+					.postLong(Double.parseDouble(postLong))
+					.postContent(content)
+					.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
+					.postImg(fileName)
+					.build();
+			
+	        postNo = postService.save(post);
+	        System.out.println("post 저장 완료(postNo) : " + postNo);
+	    }
+//		// post 객체 생성
+//		Post post = Post.builder()
+//				.user(UserDTO.dtoToEntity(userDTO))
+//				.postLat(Double.parseDouble(postLat))
+//				.postLong(Double.parseDouble(postLong))
+//				.postContent(content)
+//				.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
+//				.postImg(fileName)
+//				.build();
 		
-        postNo = postService.save(post);
-        System.out.println("post 저장 완료(postNo) : " + postNo);
+//        postNo = postService.save(post);
+//        System.out.println("post 저장 완료(postNo) : " + postNo);
+
 
 		return postNo;
 	}
@@ -135,7 +153,8 @@ public class PostController {
 			@RequestParam(name = "files", required = false) MultipartFile file) {
 
 		System.out.println("#################포스트 수정");
-		String fileName = "";
+
+		String fileName = postService.getPostByNo(postNo).getPostImg();
 		
 		if (file != null && file.getSize() != 0) {
 			try {
