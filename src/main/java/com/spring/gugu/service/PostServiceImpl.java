@@ -239,7 +239,7 @@ public class PostServiceImpl implements PostService {
 			
 		}
 		
-		return userId;
+		return post.getLikeCnt();
 	}
 	
 	
