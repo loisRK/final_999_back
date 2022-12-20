@@ -235,4 +235,20 @@ public class PostController {
   		  @RequestParam("roomNo") String roomNo) {
 	  
     }
+    
+    // 마이페이지용 infinity scroll 조회
+ 	@GetMapping("/mypagePosts")
+ 	public PageResultDTO getPostLike(@RequestParam("page") int pageNo, @RequestParam("size") int size, 
+ 			@RequestParam("loginId") Long loginId) {
+ 		
+ 		// pagination을 위한 pageable 객체 생성
+ 		PageRequestDTO requestDTO2 = PageRequestDTO.builder().page(pageNo).size(size).build();
+
+ 		// pageable 객체에 넣은 post 전체 데이터
+ 		PageResultDTO pageResultDTO2 = postService.getPostLike(requestDTO2, loginId);
+ 		System.out.println("pageREsult:"+pageResultDTO2);
+
+ 		return pageResultDTO2;
+ 	}
+
 }
