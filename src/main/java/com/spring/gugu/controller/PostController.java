@@ -154,7 +154,7 @@ public class PostController {
 
 		System.out.println("#################포스트 수정");
 
-		String fileName = "";
+		String fileName = postService.getPostByNo(postNo).getPostImg();
 		
 		if (file != null && file.getSize() != 0) {
 			try {
