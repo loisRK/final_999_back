@@ -139,7 +139,9 @@ public class KakaoServiceImpl implements KakaoService {
 		return kakaoProfile;
 	}
 	
-	// 우리 DB에 등록되어 있는 사용자인지 확인
+	/*
+	 *  우리 DB에 등록되어 있는 사용자인지 확인
+	 */
 	@Override
 	public ArrayList<User> checkMember(String token) {		// token = 액세스 토큰
 		// 카카오 서버에게 사용자 정보 요청
@@ -165,6 +167,7 @@ public class KakaoServiceImpl implements KakaoService {
 		return users;
 	}
 
+	
 	/* 
 	 * kakao server에서 승인받은 토큰을 이용해 
 	 * 사용자의 kakao profile data를 불러와 
@@ -217,38 +220,6 @@ public class KakaoServiceImpl implements KakaoService {
 		
 		return createToken(user, token);
 	}
-//	@Override
-//	public ArrayList<String> SaveUserAndGetToken(User user, String token) {	// token = 액세스토큰
-//		
-//		String userExist = "no";
-//		
-//		// 카카오 서버에게 사용자 정보 요청
-//		KakaoProfile profile = findProfile(token);
-//		
-//		// 우리 DB에서 카카오아이디로 유저 검색
-//		User user = kakaoRepo.findByKakaoId(profile.getId());
-//		
-//		if(user == null) {		// 첫 로그인 시 회원가입이 안되어 있을 때
-//			user = User.builder()
-//							  .kakaoId(profile.getId())
-//							  .kakaoNickname(profile.getKakao_account().getProfile().getNickname())
-//							  .kakaoProfileImg(profile.getKakao_account().getProfile().getProfile_image_url())
-//							  .kakaoEmail(profile.getKakao_account().getEmail())
-//							  .ageRange(profile.getKakao_account().getAge_range())
-//							  .gender(profile.getKakao_account().getGender())
-//							  .build();
-//			
-//			kakaoRepo.save(user);
-//		} else {
-//			userExist = "yes";
-//		}
-//		
-//		ArrayList<String> returnVal = new ArrayList<String>();
-//		returnVal.add(userExist);
-//		returnVal.add(createToken(user, token));
-//		
-//		return returnVal;
-//	}
 	
 	
 	/* 
@@ -297,117 +268,10 @@ public class KakaoServiceImpl implements KakaoService {
 	}
 	
 	
-	// 로그아웃 메소드 - kakao logout API 호출
-	// 해당 액세스 토큰만 만료 처리 - 같은 액세스 토큰을 사용하는 모든 기기에서 로그아웃 됨
-//	@Override
-//	public ResponseEntity<String> logout(HttpServletRequest request) {
-//		
-//		// request 안에 들어있는 jwt 토큰의 payload 부분에서 accessToken 정보를 불러옴
-//		String token = (String) request.getAttribute("accessToken");
-//		String refreshToken = (String) request.getAttribute("refreshToken");
-//		
-//		// 통신에 필요한 RestTemplate 객체를 만든다
-//		RestTemplate rt = new RestTemplate();
-//		
-//		// http 헤더
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-//		headers.add("Authorization", "Bearer " + token); // 헤더에는 발급받은 엑세스 토큰을 넣어 요청해야한다
-////		headers.setLocation(URI.create("/"));
-//		
-//		// HttpHeader 정보를 http 엔터티에 담아준다
-//		HttpEntity<MultiValueMap<String, String>> kakaoLogoutRequest =
-//				new HttpEntity<>(headers);
-//		System.out.println("############ HEADERS : " + headers);
-//		
-//		// 토큰 정보 확인 - 액세스 토큰이 만료됐으면 401 에러가 뜸
-//		ResponseEntity<String> tokenInfoResponse = rt.exchange(
-//				"https://kapi.kakao.com/v1/user/access_token_info",
-//				HttpMethod.GET,
-//				kakaoLogoutRequest,
-//				String.class
-//		);
-//		
-//		// Json 응답을 KakaoProfile 객체로 변환해 리턴
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		TokenInfo tokenInfo = null;
-//		try {
-//			tokenInfo = objectMapper.readValue(tokenInfoResponse.getBody(), TokenInfo.class);
-//		} catch (JsonProcessingException e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println("######### tokenInfo : " + tokenInfo.toString());
-//		System.out.println("### status code : " + tokenInfoResponse.getStatusCodeValue());
-//		
-//		// 토큰이 만료되어 토큰 갱신이 필요할 때
-//		if(tokenInfoResponse.getStatusCodeValue() == 401) {
-//			// http 바디
-//			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-//			params.add("grant_type", "refresh_token");
-//			params.add("client_id", client_id);
-//			params.add("refresh_token", refreshToken);
-//			
-//			// HttpHeader 정보를 http 엔터티에 담아준다
-//			HttpEntity<MultiValueMap<String, String>> tokenInfoRequest =
-//					new HttpEntity<>(params);
-//			
-//			// 토큰 갱신
-//			ResponseEntity<String> refreshTokenResponse = rt.exchange(
-//					"https://kapi.kakao.com/oauth/token",
-//					HttpMethod.POST,
-//					tokenInfoRequest,
-//					String.class
-//			);
-//			
-//			// Json 응답을 KakaoProfile 객체로 변환해 리턴
-//			ObjectMapper objectMapper2 = new ObjectMapper();
-//			RefreshTokenInfo refreshTokenInfo = null;
-//			try {
-//				refreshTokenInfo = objectMapper2.readValue(refreshTokenResponse.getBody(), RefreshTokenInfo.class);
-//			} catch (JsonProcessingException e) {
-//				e.printStackTrace();
-//			}
-//			System.out.println("######### refreshTokenInfo : " + refreshTokenInfo.toString());
-//			
-//			HttpHeaders headers2 = new HttpHeaders();
-//			headers2.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-//			headers2.add("Authorization", "Bearer " + token); // 헤더에는 발급받은 엑세스 토큰을 넣어 요청해야한다
-//			
-//			// HttpHeader 정보를 http 엔터티에 담아준다
-//			HttpEntity<MultiValueMap<String, String>> kakaoLogoutRequest2 =
-//					new HttpEntity<>(headers2);
-//			
-//			ResponseEntity<String> kakaoLogoutResponse = rt.exchange(
-////					"https://kapi.kakao.com/v1/user/unlink",		// 동의 전으로 돌아가기
-//					"https://kapi.kakao.com/v1/user/logout",		// 그냥 로그아웃하기 
-//					HttpMethod.POST,
-//					kakaoLogoutRequest2,
-//					String.class
-//			);
-//			
-//			return kakaoLogoutResponse;
-//		}
-//		
-//		
-//		/*
-//		 * - HttP 요청 (POST 방식) 후, response 변수에 응답을 받음
-//		 * - 해당 주소로 Http 요청을 보내 String 변수에 응답을 받는다
-//		 * - access token 방식으로 request를 보내 logout을 실행하는 API 호출 
-//		 */
-//		ResponseEntity<String> kakaoLogoutResponse = rt.exchange(
-////				"https://kapi.kakao.com/v1/user/unlink",		// 동의 전으로 돌아가기
-//				"https://kapi.kakao.com/v1/user/logout",		// 그냥 로그아웃하기 
-//				HttpMethod.POST,
-//				kakaoLogoutRequest,
-//				String.class
-//		);
-//		System.out.println("############ kakaoLogoutResponse : " + kakaoLogoutResponse);
-//		
-//		return kakaoLogoutResponse;
-//	}
-	
-	// 로그아웃 할 때 액세스코드가 아닌 해당 카카오ID로 로그인 된 모든 기기에서 로그아웃하기
-	// 해당 사용자의 모든 토큰 만료 처리(브라우저 달라도 로그아웃 되지 않을까!?)
+	/*
+	 * 로그아웃 할 때 액세스코드가 아닌 해당 카카오ID로 로그인 된 모든 기기에서 로그아웃하기
+	 * 해당 사용자의 모든 토큰 만료 처리(브라우저 달라도 로그아웃 되지 않을까!?)
+	 */
 	@Override
 	public ResponseEntity<String> logout2(HttpServletRequest request) {
 		// request 안에 들어있는 jwt 토큰의 payload 부분에서 kakaoId 정보를 불러옴
@@ -442,8 +306,72 @@ public class KakaoServiceImpl implements KakaoService {
 		
 		return kakaoLogoutResponse;
 	}
+	
+	
+	/*
+	 * 카카오ID로 로그인 된 모든 기기에서 로그아웃 및 회원탈퇴 
+	 * 해당 사용자의 토큰 만료
+	 */
+	@Override
+	public ResponseEntity<String> withdrawMember(HttpServletRequest request) {
+		// request 안에 들어있는 jwt 토큰의 payload 부분에서 kakaoId 정보를 불러옴
+		String kakaoId = request.getAttribute("userCode").toString();
+		System.out.println("### kakaoId : " + kakaoId);
+		
+		// 통신에 필요한 RestTemplate 객체를 만든다
+		RestTemplate rt = new RestTemplate();
+		
+////		 request 안에 들어있는 jwt 토큰의 payload 부분에서 accessToken 정보를 불러옴
+//		String token = (String) request.getAttribute("accessToken");
+//      	HttpHeaders headers = new HttpHeaders();
+//        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+//        headers.add("Authorization", "Bearer " + token); // 헤더에는 발급받은 엑세스 토큰을 넣어 요청해야한다
+//         
+//        // HttpHeader 정보를 http 엔터티에 담아준다
+//        HttpEntity<MultiValueMap<String, String>> kakaoUnlinkRequest =
+//              new HttpEntity<>(headers);
+		
+        // http 헤더
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "KakaoAK " + adminKey);
+		
+		// http 바디
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("target_id_type", "user_id");
+		params.add("target_id", kakaoId);
+		
+		// HttpHeader 정보를 http 엔터티에 담아준다
+		HttpEntity<MultiValueMap<String, String>> kakaoUnlinkRequest =
+				new HttpEntity<>(params, headers);
+        
+		// 토큰 갱신
+		ResponseEntity<String> kakaoUnlinkResponse = rt.exchange(
+				"https://kapi.kakao.com/v1/user/unlink",		// 동의 전으로 돌아가기
+				HttpMethod.POST,
+				kakaoUnlinkRequest,
+				String.class
+		);
+		
+		System.out.println("###### logout2 : " + kakaoUnlinkResponse);
+		
+		return kakaoUnlinkResponse;
+	}
+	
+	
+	/*
+	 * 회원 탈퇴 클릭 시 User entity 에서 회원 정보 삭제
+	 */
+	@Override
+	@Transactional
+	public void userDelete(Long userId) {
+		
+		kakaoRepo.deleteById(userId);
+	}
+	
 
-
+	/*
+	 * 회원 정보 수정
+	 */
 	@Override
 	@Transactional
 	public void userUpdate(Long userId, String email, String nickname, String fileName) {

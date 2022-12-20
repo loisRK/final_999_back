@@ -36,6 +36,10 @@ public interface KakaoService {
 	
 	public void userUpdate(Long userId, String email, String nickname, String fileName);
 
+	public ResponseEntity<String> withdrawMember(HttpServletRequest request);
+
+	public void userDelete(Long userId);
+
 
 
 

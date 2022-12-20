@@ -41,7 +41,7 @@ public class LikeTable {
 //	@Column(name = "post_no")
 //	private Long postNo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User user;
