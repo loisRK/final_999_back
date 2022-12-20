@@ -1,5 +1,6 @@
 package com.spring.gugu.repository;
 
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -19,7 +20,8 @@ public interface PostRepository extends JpaRepository<Post, Long>{
 	@Query(value = "SELECT p FROM Post p WHERE p.user = :user")
 	List<Post> findAllByUser(@Param("user") User user); 
 	
-	Page<Post> findByUser(User user, Pageable pageable);
+	@Query(value = "select p from Post p where p.user in :user")
+	Page<Post> findAllByUser(@Param("user") List<User> users, Pageable pageable);
 	
 //	List<PostLikeDTO>
 }

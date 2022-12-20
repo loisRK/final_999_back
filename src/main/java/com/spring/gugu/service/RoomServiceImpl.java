@@ -5,6 +5,8 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +67,11 @@ public class RoomServiceImpl implements RoomService{
 		Room room = roomRepo.getById(roomNo);
 		room.exitClient();
 		roomRepo.save(room);
+	}
+
+	@Transactional
+	public void deleteRoom(Long roomNo) {
+		roomRepo.deleteById(roomNo);
 	}
 
 }

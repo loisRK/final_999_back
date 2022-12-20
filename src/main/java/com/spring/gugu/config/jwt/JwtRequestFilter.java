@@ -36,12 +36,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         Long userCode = null;
         String accessToken = null;
+        String refreshToken = null;
 
         try {
             userCode = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
                     .getClaim("id").asLong();
             accessToken = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
             		.getClaim("access_token").asString();
+            refreshToken = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
+            		.getClaim("refresh_token").asString();
 
         } catch (TokenExpiredException e) {
             e.printStackTrace();
@@ -53,6 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         request.setAttribute("userCode", userCode);
         request.setAttribute("accessToken", accessToken);
+        request.setAttribute("refreshToken", accessToken);
 
         filterChain.doFilter(request, response);
     }

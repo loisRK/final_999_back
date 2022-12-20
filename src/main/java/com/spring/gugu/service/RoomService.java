@@ -18,5 +18,7 @@ public interface RoomService {
 	public void clientIn(Long roomNo);
 
 	public void clientOut(Long roomNo);
+	
+	public void deleteRoom(Long roomNo);
 
 }
