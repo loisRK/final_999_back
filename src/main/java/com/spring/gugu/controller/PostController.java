@@ -150,11 +150,12 @@ public class PostController {
 	@PutMapping("/updatePost/{postNo}")
 	public void updatePost(@PathVariable("postNo") Long postNo,
 			@RequestParam("content") String content,
+			@RequestParam("stringFile") String fileImg,
 			@RequestParam(name = "files", required = false) MultipartFile file) {
 
 		System.out.println("#################포스트 수정");
 
-		String fileName = postService.getPostByNo(postNo).getPostImg();
+		String fileName = fileImg;
 		
 		if (file != null && file.getSize() != 0) {
 			try {
