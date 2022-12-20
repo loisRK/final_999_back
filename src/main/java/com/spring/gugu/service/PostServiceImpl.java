@@ -241,4 +241,23 @@ public class PostServiceImpl implements PostService {
 		
 		return userId;
 	}
+	
+	
+	@Override
+	@Transactional
+	public PageResultDTO<PostLikeDTO, Post> getPostLike(PageRequestDTO requestDTO, Long loginId) {
+		// pageable 객체 생성
+		System.out.println("inside service");
+		Pageable pageable = requestDTO.getPageable();
+		Page<Post> result = null;
+		User users = userRepo.findByKakaoId(loginId);
+		System.out.println("*****************user" + users);
+		result = postRepo.findAllByUser(users, pageable);
+		
+		System.out.println("######### Page<Post> : " + result);
+		// Post 타입을 PostDTO 타입으로 변경해 저장하는 function 정의
+		Function<Post, PostLikeDTO> fn = (post -> PostLikeDTO.fromEntities(post, getLoginLikes(post, loginId)));
+		// PageResultDTO 객체에 페이지에 담을 내용인 result값과 EntitytoDTO변경을 위한 function을 전달
+		return new PageResultDTO<PostLikeDTO, Post>(result, fn);
+	}
 }

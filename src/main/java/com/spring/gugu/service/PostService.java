@@ -16,7 +16,8 @@ public interface PostService {
 	
 	public PageResultDTO<PostDTO, Post> getList(PageRequestDTO requestDTO);
 //	public PageResultDTO<PostLikeDTO, Post> getPostLike(PageRequestDTO requestDTO, Long loginId);
-	public PageResultDTO<PostLikeDTO, Post> getPostLike(PageRequestDTO requestDTO, Long loginId, String nickname);
+	public PageResultDTO<PostLikeDTO, Post> getPostLike(PageRequestDTO requestDTO, Long loginId, String nickname); // 전체포스트 infinity scroll
+	public PageResultDTO<PostLikeDTO, Post> getPostLike(PageRequestDTO requestDTO, Long loginId); // mypage 포스트 infinity scroll
 
 	public Long save(Post post);
 	
