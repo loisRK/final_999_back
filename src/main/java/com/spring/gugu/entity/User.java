@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -29,7 +30,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString(exclude = "posts")
+@ToString(exclude = {"posts", "likes"})
 //entity 수정사항을 계속 확인하게 하는 annotation, @createdDate, @LastModifiedDate annoatation사용을 위한 설정
 @EntityListeners(AuditingEntityListener.class)	
 @Table(name = "user")
@@ -59,9 +60,12 @@ public class User {
 	@CreationTimestamp
 	private Timestamp createTime;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<Post> posts = new ArrayList<Post>();
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<LikeTable> likes = new ArrayList<LikeTable>();
 	
 //	@OneToOne(mappedBy = "user")
 //	private Room room;

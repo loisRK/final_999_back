@@ -79,7 +79,7 @@ public class Post {
 	@Column(name = "post_img")
 	private String postImg;
 	
-	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JsonIgnore
 	private List<LikeTable> likes = new ArrayList<LikeTable>();
 	

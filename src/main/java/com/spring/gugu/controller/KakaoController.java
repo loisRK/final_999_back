@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +38,7 @@ public class KakaoController {
 	
 	@Autowired
 	private KakaoServiceImpl kakaoService;
+	
 	@Autowired
 	private S3Uploader s3Uploader;
 	
@@ -103,39 +108,6 @@ public class KakaoController {
 		return ResponseEntity.ok().headers(headers).body("success");
 	}
 	
-//	// 프론트에서 인가코드 받아오는 URL
-//	@GetMapping("/oauth/token")
-//	public ResponseEntity<String> getLogin(@RequestParam("code") String code) {	// code = 인가코드
-////		System.out.println("############CODE " + code);
-//		// 넘겨온 인가코드를 통해 access_token 발급
-//		OauthToken oauthToken = kakaoService.getAccessToken(code);
-//		System.out.println("################################ oauthToken : " + oauthToken.toString());
-//		
-//		// 발급 받은 accessToken으로 카카오 회원 정보를 DB에 저장 후 JWT를 생성
-//		ArrayList<String> jwtToken = kakaoService.SaveUserAndGetToken(oauthToken.getAccess_token());
-//		System.out.println("################################ jwtToken : " + jwtToken.toString());
-//		
-//		// 응답 헤더의 Authorization 이라는 항목에 JWT 를 넣어준다
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.add("userExist", jwtToken.get(0));
-//		headers.add(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.get(1));
-//		System.out.println("################################ headers : " + headers.toString());
-//		
-//		// JWT 가 담긴 헤더와 200 ok 스테이터스 값, "success" 라는 바디값을 ResponseEntity 에 담아 프론트 측에 전달한다
-//		System.out.println("##### " + ResponseEntity.ok().headers(headers).body("success"));
-//		return ResponseEntity.ok().headers(headers).body("success");
-//	}
-	
-    // jwt 토큰으로 유저정보 요청하기
-//    @GetMapping("/myPage")
-//    public ResponseEntity<Object> getCurrentUser(HttpServletRequest request) {
-//    	Long kakaoId = (Long) request.getAttribute("userCode");    	
-//    	System.out.println("kakaoID : " + kakaoId);
-//        User user = kakaoService.getUserById(kakaoId);
-//        System.out.println("##### USER " + user);
-//
-//        return ResponseEntity.ok().body(user);
-//    }
     
     @GetMapping("/myPage")
     public ResponseEntity<Object> getCurrentUser(HttpServletRequest request) {
@@ -147,17 +119,40 @@ public class KakaoController {
         return ResponseEntity.ok().body(userDTO);
     }
     
-    
+    // 로그 아웃 기능
     @GetMapping("/kakaoLogout")
     public ResponseEntity<String> getLogout(HttpServletRequest request) {
-		
     	ResponseEntity<String> response = kakaoService.logout2(request);
-//    	ResponseEntity<String> response = kakaoService.logout(request);
     	
     	System.out.println("######### RESPONSE : " + response);
     	
 		return ResponseEntity.ok().body("success");
     }
+    
+    
+    // 회원 탈퇴
+    @GetMapping("/guguWithdraw")
+    public ResponseEntity<String> getWithdraw(HttpServletRequest request) {
+    	
+    	System.out.println("##########"+request.getAttribute("userCode").toString());
+    	// kakao 계정 앱과 연결 해제 - unlink
+    	ResponseEntity<String> response = kakaoService.withdrawMember(request);
+    	System.out.println("###########"+response.toString());
+    	// User Entity data 삭제
+    	JSONParser jsonParser = new JSONParser();
+    	try {
+			JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
+			System.out.println("############response jsonobject: "+jsonObject);
+			String kakaoId = jsonObject.get("id").toString();
+			System.out.println("kakaoID: "+kakaoId);
+	    	kakaoService.userDelete(Long.valueOf(kakaoId));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok().body("success");
+    }
+    
     
     // 프로필 수정 
     @PutMapping("/updateUser/{userId}")
@@ -180,7 +175,5 @@ public class KakaoController {
 		}
     	
     	kakaoService.userUpdate(userId, email, nickname, fileName);
-    	
-    	
     }
 }
