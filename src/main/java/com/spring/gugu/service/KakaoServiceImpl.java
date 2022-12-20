@@ -179,13 +179,27 @@ public class KakaoServiceImpl implements KakaoService {
 		// 카카오 서버에게 사용자 정보 요청
 		KakaoProfile profile = findProfile(token);
 		
+		String profileNickname = profile.getKakao_account().getProfile().getNickname();
+		if (nickname != "") {
+			profileNickname = nickname;
+		}
+		String profileProfileImg = profile.getKakao_account().getProfile().getProfile_image_url();
+		String profileAge = profile.getKakao_account().getAge_range();
+		if (age != "") {
+			profileAge = age;
+		}
+		String profileGender = profile.getKakao_account().getGender();
+		if (gender != "") {
+			profileGender = gender;
+		}
+		
 		String fileName = "";
 		
 		if (files != null) {
 			for(MultipartFile file : files) {
 				try {
 					// s3 file 링크로 fileName 받아와서 postImg data로 저장하면 src로 걍 링크를 긁어오면 화면에 출력됨
-					fileName = s3Uploader.uploadFiles(file, "gugu-post");
+					profileProfileImg = s3Uploader.uploadFiles(file, "gugu-post");
 					System.out.println("s3 file url : " + fileName);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -195,11 +209,11 @@ public class KakaoServiceImpl implements KakaoService {
 		
 		User user = User.builder()
 						  .kakaoId(profile.getId())
-						  .kakaoNickname(nickname)
-						  .kakaoProfileImg(fileName)
+						  .kakaoNickname(profileNickname)
+						  .kakaoProfileImg(profileProfileImg)
 						  .kakaoEmail(profile.getKakao_account().getEmail())
-						  .ageRange(age)
-						  .gender(gender)
+						  .ageRange(profileAge)
+						  .gender(profileGender)
 						  .build();
 		
 		kakaoRepo.save(user);
