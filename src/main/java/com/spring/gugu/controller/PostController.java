@@ -75,7 +75,7 @@ public class PostController {
 
 		System.out.println("####"+content+"####");
 		// 포스팅
-		if(content != null && content != " ") {
+		if(content != null && content != "") {
 			Post post = Post.builder()
 					.user(UserDTO.dtoToEntity(userDTO))
 					.postLat(Double.parseDouble(postLat))
@@ -88,18 +88,18 @@ public class PostController {
 	        postNo = postService.save(post);
 	        System.out.println("post 저장 완료(postNo) : " + postNo);
 	    }
-		// post 객체 생성
-		Post post = Post.builder()
-				.user(UserDTO.dtoToEntity(userDTO))
-				.postLat(Double.parseDouble(postLat))
-				.postLong(Double.parseDouble(postLong))
-				.postContent(content)
-				.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
-				.postImg(fileName)
-				.build();
+//		// post 객체 생성
+//		Post post = Post.builder()
+//				.user(UserDTO.dtoToEntity(userDTO))
+//				.postLat(Double.parseDouble(postLat))
+//				.postLong(Double.parseDouble(postLong))
+//				.postContent(content)
+//				.likeCnt(0L)	// 처음 게시되는 글이므로 0으로 초기값 설정
+//				.postImg(fileName)
+//				.build();
 		
-        postNo = postService.save(post);
-        System.out.println("post 저장 완료(postNo) : " + postNo);
+//        postNo = postService.save(post);
+//        System.out.println("post 저장 완료(postNo) : " + postNo);
 
 
 		return postNo;
