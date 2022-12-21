@@ -29,6 +29,8 @@ public interface KakaoService {
 	public ResponseEntity<String> logout2(HttpServletRequest request);
 
 //	public User getUserById(Long userId);
+	
+	public String createToken(User user, String token);
 
 	public UserDTO getUser(HttpServletRequest request);
 
@@ -40,8 +42,6 @@ public interface KakaoService {
 
 	public void userDelete(Long userId);
 
-
-
-
+	public int updatePostCnt(Long kakaoId, int addCnt);
 
 }
