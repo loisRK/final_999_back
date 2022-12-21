@@ -26,6 +26,7 @@ import com.spring.gugu.dto.PostDTO;
 import com.spring.gugu.dto.UserDTO;
 //import com.spring.gugu.entity.Like;
 import com.spring.gugu.entity.Post;
+import com.spring.gugu.entity.User;
 import com.spring.gugu.service.FileServiceImpl;
 import com.spring.gugu.service.KakaoServiceImpl;
 import com.spring.gugu.service.PostServiceImpl;
@@ -88,6 +89,9 @@ public class PostController {
 			
 	        postNo = postService.save(post);
 	        System.out.println("post 저장 완료(postNo) : " + postNo);
+	        
+	        // 사용자의 총 포스팅 개수 +1 추가
+	        userService.updatePostCnt(userDTO.getKakaoId(), 1);
 	    }
 //		// post 객체 생성
 //		Post post = Post.builder()
@@ -101,7 +105,6 @@ public class PostController {
 		
 //        postNo = postService.save(post);
 //        System.out.println("post 저장 완료(postNo) : " + postNo);
-
 
 		return postNo;
 	}
@@ -176,7 +179,8 @@ public class PostController {
 	@DeleteMapping("/postDelete")
 	public void deleteDiary(@RequestParam("postNo") Long postNo) {
 
-		String postImgLink = postService.getById(postNo).getPostImg();
+		Post post = postService.getById(postNo);
+		String postImgLink = post.getPostImg();
 		
 		// s3 delete code 실행 안됨
 //		if(postImgLink != null && postImgLink != "") {
@@ -186,6 +190,9 @@ public class PostController {
 //		
 		System.out.println("postNo : "+postNo);
 		postService.deletePost(postNo);
+		
+		// 포스팅 제거하면 사용자 포스팅 총 개수에서 -1하기
+		userService.updatePostCnt(post.getUser().getKakaoId(), 0);
 	}
 
 

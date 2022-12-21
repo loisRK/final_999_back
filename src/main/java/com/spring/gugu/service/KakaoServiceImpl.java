@@ -174,6 +174,7 @@ public class KakaoServiceImpl implements KakaoService {
 	 * UserEntity에 저장 하는 메소드
 	 */
 	@Override
+	@Transactional
 	public String SignupAndGetToken(String token, String nickname, String gender, String age, List<MultipartFile> files) {	// token = 액세스토큰
 		
 		// 카카오 서버에게 사용자 정보 요청
@@ -226,6 +227,7 @@ public class KakaoServiceImpl implements KakaoService {
 	 * 우리 서버에서 자체적으로 jwt token을 생성해주는 메소드
 	 * jwt token에 원하는 데이터를 넣어 줄 수  있다.
 	 */
+	@Override
 	public String createToken(User user, String token) {
 		System.out.println("######## createToken User : " + user);
 		System.out.println("######## createToken User email: " + user.getKakaoEmail());
@@ -386,4 +388,23 @@ public class KakaoServiceImpl implements KakaoService {
 		System.out.println("변경완료!!" + user.getKakaoNickname());
 		
 	}
+	
+	@Override
+	@Transactional
+	public int updatePostCnt(Long kakaoId, int addCnt) {
+		User user = kakaoRepo.getById(kakaoId);
+//		System.out.println("### updatePostCnt : " + user.toString());
+		
+		if(addCnt == 1) {
+//			System.out.println("### PLUS!!!!!!!!!");
+			user.addPostCnt();
+		} else {
+//			System.out.println("### MINUS!!!!!!!!!");
+			user.minusPostCnt();
+		}
+		
+//		System.out.println("##### getPostCnt : " + user.getPostCnt());
+		return user.getPostCnt();
+	}
+
 }

@@ -104,5 +104,15 @@ public class User {
 		this.kakaoEmail = kakaoEmail;
 		this.kakaoNickname = kakaoNickname;
 	}
+	
+	// 포스팅 개수 +1 추가
+	public void addPostCnt() {
+		this.postCnt = this.postCnt + 1;
+	}
+	
+	// 포스팅 개수 -1 제거
+	public void minusPostCnt() {
+		this.postCnt = this.postCnt - 1;
+	}
 
 }
