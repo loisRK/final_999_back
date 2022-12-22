@@ -20,7 +20,7 @@ import com.spring.gugu.service.RoomServiceImpl;
 
 @RestController		// 페이지 전환이 필요없으므로 restController 사용
 @RequestMapping(value = "/api")
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://35.78.93.205:3000"})
 @DynamicUpdate
 //@RequiredArgsConstructor
 public class RoomController {
