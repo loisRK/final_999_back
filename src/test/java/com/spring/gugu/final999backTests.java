@@ -1,10 +1,10 @@
-package com.spring.diary;
+package com.spring.gugu;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Step15DiaryApplicationTests {
+class final999backTests {
 
 	@Test
 	void contextLoads() {
