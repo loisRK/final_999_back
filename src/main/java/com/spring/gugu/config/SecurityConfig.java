@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     KakaoRepository kakaoRepo;
 
-    public static final String FRONT_URL = "http://35.78.93.205:3000";
+    public static final String FRONT_URL = "http://175.41.229.233:3000";
 
     private final CorsFilter corsFilter;
 
