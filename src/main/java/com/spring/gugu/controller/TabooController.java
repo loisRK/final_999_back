@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController		// 페이지 전환이 필요없으므로 restController 사용
 @RequestMapping(value = "/api")
-@CrossOrigin(origins = {"http://175.41.229.233:3000"})
+@CrossOrigin(origins = {"*"})
 @DynamicUpdate
 @RequiredArgsConstructor
 public class TabooController {
