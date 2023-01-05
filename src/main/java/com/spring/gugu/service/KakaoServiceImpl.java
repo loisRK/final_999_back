@@ -69,7 +69,7 @@ public class KakaoServiceImpl implements KakaoService {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", client_id);
-		params.add("redirect_uri", "http://175.41.229.233:3000/checkMember");
+		params.add("redirect_uri", "https://www.dulgi.net/checkMember");
 //		params.add("redirect_uri", "http://175.41.229.233:3000/oauth/callback/kakao");
 		params.add("code", code);
 //		params.add("client_secret", "{시크릿 키}");		// 생략 가능!
