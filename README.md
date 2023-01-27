@@ -16,8 +16,7 @@
 [1️⃣ 사용 기술](#1️-사용-기술) <br/>
 [2️⃣ ERD 설계](#2️-ERD-설계) <br/>
 [3️⃣ 주요 기능 및 화면 구성](#3-주요-기능-및-화면-구성) <br/>
-[4️⃣ 트러블슈팅](#4-트러블슈팅) <br/>
-[5️⃣ 회고](#5-회고)
+[4️⃣ 트러블슈팅](#4-트러블슈팅)
 
 ## 1️. 사용 기술
 <!-- 사용 기술 스택 -->
@@ -49,22 +48,10 @@
 <summary>로그인 API 적용 이슈</summary>
 <div markdown="1">
 
-안녕
-
-</div>
-</details>
-<details>
-<summary>채팅 실시간 랜더링 이슈</summary>
-<div markdown="1">
-
-안녕
+![image](https://user-images.githubusercontent.com/39821066/215045850-62f65580-5672-45c4-a6de-9a225bf2820b.png)
 
 </div>
 </details>
 
 ### 그 외 트러블슈팅 리스트
 <a href="https://docs.google.com/spreadsheets/d/1egXVOZWhBpeTN812BIy81WCy3DWp-L4Y2sEKtPqrb3E/edit?usp=share_link">에러 및 이슈 공유 스프레드시트</a>
-
-## 5. 회고
-### 추후 스터디를 통해 개선하고 싶은 부분
-- 사용자 편의 및 사업성 확장을 위해 앱을 통한 배포를 해보고 싶습니다.
