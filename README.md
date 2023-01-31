@@ -55,4 +55,4 @@
 </details>
 
 ### 그 외 트러블슈팅 리스트
-<a href="https://docs.google.com/spreadsheets/d/1egXVOZWhBpeTN812BIy81WCy3DWp-L4Y2sEKtPqrb3E/edit?usp=share_link">에러 및 이슈 공유 스프레드시트</a>
+🔗<a href="https://docs.google.com/spreadsheets/d/1egXVOZWhBpeTN812BIy81WCy3DWp-L4Y2sEKtPqrb3E/edit?usp=share_link">에러 및 이슈 공유 스프레드시트</a>
