@@ -32,6 +32,7 @@
 </div>
 
 ## 3. 주요 기능 및 화면 구성
+🔗[시연영상](https://www.youtube.com/watch?app=desktop&v=1uD3U-tUBIs)
 ### 주요 기능
 - 실시간 위치기반 채팅 및 포스트의 Map View / List View
 - 포스팅 게시판
