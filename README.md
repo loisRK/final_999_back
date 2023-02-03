@@ -41,7 +41,7 @@
 <img src="https://github.com/loisRK/md_source/blob/main/final_prj_src/mainmenu.png" width="70%"/>
 
 ### 화면 구성
-- 모바일 기기에서도 접속 시 앱처럼 사용할 수 있도록 반응형 웹 컴포넌트 구성했습니다.
+- 모바일 기기에서도 접속 시 앱처럼 사용할 수 있도록 반응형 웹 컴포넌트로 구성했습니다.
 <img src="https://github.com/loisRK/md_source/blob/main/final_prj_src/mainpage.png" width="70%"/>
 
 ## 4. 트러블슈팅
