@@ -33,7 +33,7 @@
 
 ## 3. 주요 기능 및 화면 구성
 🔗[시연영상](https://www.youtube.com/watch?app=desktop&v=1uD3U-tUBIs)
-🔗[999.com 포트폴리오](https://www.notion.so/rollslois/999-com-14a79540fe4846bd901e3d0972ae5787)
+🔗[999.com 포트폴리오](https://rollslois.notion.site/999-com-eae783fda0fa4a83bcf394dc75b214b2)
 ### 주요 기능
 - 실시간 위치기반 채팅 및 포스트의 Map View / List View
 - 포스팅 게시판
