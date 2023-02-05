@@ -23,8 +23,8 @@
 <img src="https://github.com/loisRK/md_source/blob/main/final_prj_src/stack.png" width="60%"/>
 
 ## 2️. ERD 설계
-- 연관관계를 통한 관리가 효율적인 데이터는 SQL을 사용한 관계형 데이터베이스 구조를 사용했습니다.
-- 채팅과 관련한 실시간성 대용량 데이터는 추후 기능의 확장 및 트래픽 증가로 인한 데이터 증가 시 관리의 효율을 높이기 위해 NoSQL을 사용한 비관계형 데이터베이스 구조 사용했습니다.
+- 연관관계를 통한 관리가 효율적인 데이터는 MySQL을 사용한 관계형 데이터베이스 구조를 사용했습니다.
+- 채팅과 관련한 실시간성 대용량 데이터는 추후 기능의 확장 및 트래픽 증가로 인한 데이터 증가 시 관리의 효율을 높이기 위해 Firebase(NoSQL)을 사용한 비관계형 데이터베이스 구조를 사용했습니다.
 <!-- ERD 다이어그램 -->
 <div>
 <img src="https://github.com/loisRK/md_source/blob/main/final_prj_src/sql.png" width="45%"/>
@@ -34,13 +34,27 @@
 ## 3. 주요 기능 및 화면 구성
 🔗[시연영상](https://www.youtube.com/watch?app=desktop&v=1uD3U-tUBIs)
 🔗[999.com 포트폴리오](https://rollslois.notion.site/999-com-eae783fda0fa4a83bcf394dc75b214b2)
+
 ### 주요 기능
-- 실시간 위치기반 채팅 및 포스트의 Map View / List View
-- 포스팅 게시판
-- 마이페이지
+<details>
+<summary>API 상세</summary>
+<div markdown="1">
+
+![image](https://user-images.githubusercontent.com/39821066/216833747-54d2771a-84de-4665-b717-353a9b7df1ac.png)
+
+</div>
+</details>
+<details>
+<summary>화면 별 주요능기능</summary>
+<div markdown="1">
+
 <img src="https://github.com/loisRK/md_source/blob/main/final_prj_src/mainmenu.png" width="70%"/>
 
+</div>
+</details>
+
 ### 화면 구성
+- react, node.js, javascript, MUI X components를 이용하여 구현했습니다.
 - 모바일 기기에서도 접속 시 앱처럼 사용할 수 있도록 반응형 웹 컴포넌트로 구성했습니다.
 <img src="https://github.com/loisRK/md_source/blob/main/final_prj_src/mainpage.png" width="70%"/>
 
@@ -51,6 +65,14 @@
 <div markdown="1">
 
 ![image](https://user-images.githubusercontent.com/39821066/215045850-62f65580-5672-45c4-a6de-9a225bf2820b.png)
+
+</div>
+</details>
+<details>
+<summary>Maps API 배포 이슈</summary>
+<div markdown="1">
+
+![image](https://user-images.githubusercontent.com/39821066/216835102-b6010301-5a0e-42c0-becc-bc91452751c3.png)
 
 </div>
 </details>
